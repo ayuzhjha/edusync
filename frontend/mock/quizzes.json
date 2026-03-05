@@ -1,0 +1,120 @@
+[
+  {
+    "id": "quiz-1-3",
+    "courseId": "course-1",
+    "lessonId": "lesson-1-3",
+    "title": "HTML Basics Quiz",
+    "description": "Test your knowledge of HTML basics",
+    "passingScore": 70,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What does HTML stand for?",
+        "options": [
+          "Hyper Text Markup Language",
+          "High Tech Modern Language",
+          "Home Tool Markup Language",
+          "Hyperlinks and Text Markup Language"
+        ],
+        "correctAnswer": 0,
+        "explanation": "HTML stands for HyperText Markup Language, the standard markup language for creating web pages."
+      },
+      {
+        "id": "q2",
+        "text": "Which tag is used to create a paragraph?",
+        "options": [
+          "<para>",
+          "<p>",
+          "<paragraph>",
+          "<par>"
+        ],
+        "correctAnswer": 1,
+        "explanation": "The <p> tag is used to create a paragraph in HTML."
+      },
+      {
+        "id": "q3",
+        "text": "What is the correct way to link a CSS file?",
+        "options": [
+          "<link rel='stylesheet' href='style.css'>",
+          "<css src='style.css'>",
+          "<style src='style.css'>",
+          "<import href='style.css'>"
+        ],
+        "correctAnswer": 0,
+        "explanation": "The correct way is to use <link rel='stylesheet' href='style.css'> in the <head> section."
+      },
+      {
+        "id": "q4",
+        "text": "Which tag is used for the largest heading?",
+        "options": [
+          "<heading>",
+          "<h6>",
+          "<h1>",
+          "<title>"
+        ],
+        "correctAnswer": 2,
+        "explanation": "The <h1> tag represents the largest heading level in HTML."
+      },
+      {
+        "id": "q5",
+        "text": "What is the correct syntax for an image tag?",
+        "options": [
+          "<img src='image.jpg' alt='description'>",
+          "<image src='image.jpg'>",
+          "<img href='image.jpg'>",
+          "<picture src='image.jpg'>"
+        ],
+        "correctAnswer": 0,
+        "explanation": "The <img> tag with src and alt attributes is the correct syntax for embedding images."
+      }
+    ],
+    "createdAt": 1704067200000
+  },
+  {
+    "id": "quiz-2-1",
+    "courseId": "course-2",
+    "lessonId": "lesson-2-1",
+    "title": "React Hooks Quiz",
+    "description": "Test your understanding of React hooks",
+    "passingScore": 75,
+    "questions": [
+      {
+        "id": "q1",
+        "text": "What hook is used to manage component state?",
+        "options": [
+          "useContext",
+          "useState",
+          "useEffect",
+          "useRef"
+        ],
+        "correctAnswer": 1,
+        "explanation": "useState is the hook used to add state to functional components."
+      },
+      {
+        "id": "q2",
+        "text": "Which hook runs after the component renders?",
+        "options": [
+          "useState",
+          "useContext",
+          "useEffect",
+          "useCallback"
+        ],
+        "correctAnswer": 2,
+        "explanation": "useEffect runs after the component renders and is used for side effects."
+      },
+      {
+        "id": "q3",
+        "text": "What is the purpose of the dependency array in useEffect?",
+        "options": [
+          "To specify which values to listen for changes",
+          "To define the component's dependencies",
+          "To improve rendering performance",
+          "All of the above"
+        ],
+        "correctAnswer": 3,
+        "explanation": "The dependency array specifies which values trigger the effect, helping control when the effect runs."
+      }
+    ],
+    "createdAt": 1704067200000
+  }
+]

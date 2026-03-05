@@ -1,0 +1,58 @@
+[
+  {
+    "id": "course-1",
+    "title": "Introduction to Web Development",
+    "description": "Learn the fundamentals of HTML, CSS, and JavaScript to build modern websites.",
+    "thumbnail": "/course-1-thumb.png",
+    "instructor": "Sarah Johnson",
+    "category": "Web Development",
+    "level": "beginner",
+    "duration": 1200,
+    "moduleCount": 5,
+    "lessonCount": 15,
+    "createdAt": 1704067200000,
+    "updatedAt": 1704067200000
+  },
+  {
+    "id": "course-2",
+    "title": "Advanced React Patterns",
+    "description": "Master advanced React concepts including hooks, context, and performance optimization.",
+    "thumbnail": "/course-2-thumb.png",
+    "instructor": "Mike Chen",
+    "category": "Web Development",
+    "level": "advanced",
+    "duration": 1500,
+    "moduleCount": 6,
+    "lessonCount": 18,
+    "createdAt": 1704067200000,
+    "updatedAt": 1704067200000
+  },
+  {
+    "id": "course-3",
+    "title": "Data Science Fundamentals",
+    "description": "Get started with data analysis, visualization, and basic machine learning concepts.",
+    "thumbnail": "/course-3-thumb.png",
+    "instructor": "Dr. Emily Rodriguez",
+    "category": "Data Science",
+    "level": "intermediate",
+    "duration": 1800,
+    "moduleCount": 7,
+    "lessonCount": 21,
+    "createdAt": 1704067200000,
+    "updatedAt": 1704067200000
+  },
+  {
+    "id": "course-4",
+    "title": "Mobile App Development with React Native",
+    "description": "Build cross-platform mobile applications using React Native.",
+    "thumbnail": "/course-4-thumb.png",
+    "instructor": "James Wilson",
+    "category": "Mobile Development",
+    "level": "intermediate",
+    "duration": 1400,
+    "moduleCount": 5,
+    "lessonCount": 14,
+    "createdAt": 1704067200000,
+    "updatedAt": 1704067200000
+  }
+]

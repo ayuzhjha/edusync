@@ -1,0 +1,88 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { Course, Progress } from '@/lib/db';
+import { Progress as ProgressBar } from '@/components/ui/progress';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Download, Clock, BookOpen } from 'lucide-react';
+
+interface CourseCardProps {
+  course: Course;
+  progress?: Progress[];
+  isDownloaded?: boolean;
+}
+
+export const CourseCard: React.FC<CourseCardProps> = ({ course, progress = [], isDownloaded = false }) => {
+  // Calculate progress percentage
+  // Use at least the number of progress entries to avoid 0/0 when course.lessonCount is missing
+  const completedCount = progress.filter((p) => p.completed).length;
+  const totalLessons = Math.max(course.lessonCount || 0, progress.length, completedCount);
+  const progressPercentage = totalLessons > 0 ? (completedCount / totalLessons) * 100 : 0;
+
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case 'beginner':
+        return 'bg-green-100 text-green-800';
+      case 'intermediate':
+        return 'bg-blue-100 text-blue-800';
+      case 'advanced':
+        return 'bg-purple-100 text-purple-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+      {/* Course Thumbnail */}
+      <div className="w-full h-40 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white">
+        <BookOpen className="w-12 h-12 opacity-70" />
+      </div>
+
+      {/* Course Content */}
+      <div className="p-4 flex flex-col flex-1">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h3 className="font-semibold text-gray-900 line-clamp-2 flex-1">{course.title}</h3>
+          {isDownloaded && (
+            <Badge className="bg-green-100 text-green-800 whitespace-nowrap flex-shrink-0">
+              <Download className="w-3 h-3 mr-1" />
+              Saved
+            </Badge>
+          )}
+        </div>
+
+        {/* Instructor */}
+        <p className="text-sm text-gray-600 mb-2">{course.instructor}</p>
+
+        {/* Level & Duration */}
+        <div className="flex items-center gap-2 mb-3">
+          <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
+          <div className="flex items-center gap-1 text-xs text-gray-600">
+            <Clock className="w-3 h-3" />
+            {Math.round((course.duration || 0) / 60)}h
+          </div>
+        </div>
+
+        {/* Lessons Info */}
+        <p className="text-xs text-gray-600 mb-3">
+          {totalLessons} lessons • {completedCount} completed
+        </p>
+
+        {/* Progress Bar */}
+        <ProgressBar value={progressPercentage} className="mb-2" />
+        <p className="text-xs text-gray-600 text-right mb-4">{Math.round(progressPercentage)}%</p>
+
+        {/* CTA Button */}
+        <Link href={`/courses/${course.id}`} className="mt-auto">
+          <Button className="w-full bg-blue-600 hover:bg-blue-700">
+            {completedCount > 0 ? 'Continue' : 'Start'} Course
+          </Button>
+        </Link>
+      </div>
+    </Card>
+  );
+};
