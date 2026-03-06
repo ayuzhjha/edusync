@@ -52,9 +52,22 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="EduLearn" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
         <meta name="theme-color" content="#3B82F6" />
+        {/* Register Service Worker for offline support */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    .then(function(reg) { console.log('[SW] Registered:', reg.scope); })
+                    .catch(function(err) { console.error('[SW] Registration failed:', err); });
+                });
+              }
+            `,
+          }}
+        />
       </head>
       <body className="font-sans antialiased">
         <Providers>
