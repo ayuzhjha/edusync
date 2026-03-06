@@ -16,6 +16,11 @@ export interface Course {
   updatedAt: number;
 }
 
+export interface OfflineAsset {
+  id: string; 
+  blob: Blob; 
+  mimeType: string;
+}
 export interface Module {
   id: string;
   courseId: string;
@@ -129,10 +134,11 @@ export class EducationDB extends Dexie {
   syncQueue!: Table<SyncQueueItem>;
   sessions!: Table<Session>;
   users!: Table<User>;
+  assets!: Table<OfflineAsset>;
 
   constructor() {
     super('EducationDB');
-    this.version(1).stores({
+    this.version(2).stores({
       courses: 'id, category, level',
       modules: 'id, courseId',
       lessons: 'id, courseId, moduleId, type',
@@ -142,6 +148,7 @@ export class EducationDB extends Dexie {
       syncQueue: 'id, userId, type, createdAt',
       sessions: 'id, userId',
       users: 'id, email',
+      assets: 'id'
     });
   }
 }
@@ -152,6 +159,27 @@ export const db = new EducationDB();
 // Utility functions for database operations
 export const dbUtils = {
   // Course operations
+  // Asset operations for Offline Video
+  async saveOfflineAsset(lessonId: string, blob: Blob): Promise<string> {
+    // Save the actual file
+    await db.assets.put({
+      id: lessonId,
+      blob: blob,
+      mimeType: blob.type
+    });
+    
+    // Update the lesson status to 'downloaded'
+    await db.lessons.update(lessonId, { 
+      isDownloaded: true,
+      downloadedAt: Date.now() 
+    });
+    
+    return lessonId;
+  },
+
+  async getOfflineAsset(lessonId: string): Promise<OfflineAsset | undefined> {
+    return db.assets.get(lessonId);
+  },
   async getCourses(): Promise<Course[]> {
     return db.courses.toArray();
   },
