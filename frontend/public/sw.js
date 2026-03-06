@@ -97,7 +97,10 @@ async function cacheFirst(request, cacheName) {
         }
         return networkResponse;
     } catch {
-        return new Response('Offline', { status: 503 });
+        return new Response('Offline', {
+            status: 503,
+            headers: { 'X-SW-Error': 'Offline-Cache-Miss' }
+        });
     }
 }
 

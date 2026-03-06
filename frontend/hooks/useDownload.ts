@@ -23,6 +23,47 @@ export interface UseDownloadReturn {
 }
 
 
+/**
+ * Force-loads a page in a hidden iframe to ensure all JS chunks and HTML
+ * are captured by the Service Worker for offline use.
+ */
+function warmUpPage(url: string): Promise<void> {
+    return new Promise((resolve) => {
+        if (typeof document === 'undefined') return resolve();
+
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = url;
+
+        const timeout = setTimeout(() => {
+            cleanup();
+            resolve();
+        }, 10000); // 10s max
+
+        const cleanup = () => {
+            clearTimeout(timeout);
+            if (iframe.parentNode) {
+                document.body.removeChild(iframe);
+            }
+        };
+
+        iframe.onload = () => {
+            // Give it 2 seconds after load to fetch all sub-resources
+            setTimeout(() => {
+                cleanup();
+                resolve();
+            }, 2000);
+        };
+
+        iframe.onerror = () => {
+            cleanup();
+            resolve();
+        };
+
+        document.body.appendChild(iframe);
+    });
+}
+
 
 export function useDownload(): UseDownloadReturn {
     const router = useRouter();
@@ -58,6 +99,13 @@ export function useDownload(): UseDownloadReturn {
             if (lessons.length === 0) {
                 toast.error('No lessons found for this course');
                 return;
+            }
+
+            // Warm up the shared lesson page code by loading the first lesson in a hidden iframe.
+            // This ensures all the JS chunks for the lesson route are cached.
+            if (navigator.onLine) {
+                updateProgress(lessons[0].id, { status: 'pending', percent: 0 }); // Show some activity
+                await warmUpPage(`/courses/${courseId}/lessons/${lessons[0].id}`);
             }
 
             // Initialize progress trackers
