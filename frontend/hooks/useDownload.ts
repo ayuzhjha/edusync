@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { dbUtils, type Lesson } from '@/lib/db';
 import { apiService } from '@/lib/api';
 import { toast } from 'sonner';
@@ -24,6 +25,7 @@ export interface UseDownloadReturn {
 
 
 export function useDownload(): UseDownloadReturn {
+    const router = useRouter();
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState<DownloadProgress[]>([]);
 
@@ -94,6 +96,11 @@ export function useDownload(): UseDownloadReturn {
 
                     // Persist the blob in IndexedDB
                     await dbUtils.saveOfflineAsset(lesson.id, blob);
+
+                    // Prefetch the lesson page to ensure RSC data and JS chunks are cached
+                    if (navigator.onLine) {
+                        router.prefetch(`/courses/${courseId}/lessons/${lesson.id}`);
+                    }
 
                     // Update lesson metadata
                     await dbUtils.saveLesson({

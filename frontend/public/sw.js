@@ -60,10 +60,11 @@ self.addEventListener('fetch', (event) => {
     if (url.hostname.includes('onrender.com')) return;
     if (url.pathname.startsWith('/api/')) return;
 
-    // Strategy: Cache-First for Next.js static assets (JS, CSS, fonts, images)
+    // Strategy: Cache-First for Next.js static assets (JS, CSS, fonts, images) and RSC payloads
     if (
         url.pathname.startsWith('/_next/static/') ||
         url.pathname.startsWith('/_next/image') ||
+        url.search.includes('_rsc') ||
         /\.(png|jpg|jpeg|svg|ico|woff2?|ttf|otf|eot)$/.test(url.pathname)
     ) {
         event.respondWith(cacheFirst(request, STATIC_CACHE));
