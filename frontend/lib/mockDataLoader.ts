@@ -108,6 +108,7 @@ const mockLessons: Lesson[] = [
     description: 'Learn common HTML tags and how to use them',
     type: 'video',
     duration: 20,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-2.png',
     order: 2,
     isDownloaded: false,
@@ -132,6 +133,7 @@ const mockLessons: Lesson[] = [
     description: 'Learn different CSS selectors and how to use them',
     type: 'video',
     duration: 25,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-3.png',
     order: 1,
     isDownloaded: false,
@@ -145,6 +147,7 @@ const mockLessons: Lesson[] = [
     description: 'Understanding the CSS box model',
     type: 'video',
     duration: 20,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-4.png',
     order: 2,
     isDownloaded: false,
@@ -158,6 +161,7 @@ const mockLessons: Lesson[] = [
     description: 'Understanding React hooks and their lifecycle',
     type: 'video',
     duration: 30,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-5.png',
     order: 1,
     isDownloaded: false,
@@ -171,6 +175,7 @@ const mockLessons: Lesson[] = [
     description: 'Creating and using custom React hooks',
     type: 'video',
     duration: 28,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-6.png',
     order: 2,
     isDownloaded: false,
@@ -184,6 +189,7 @@ const mockLessons: Lesson[] = [
     description: 'Using pandas and numpy for data analysis',
     type: 'video',
     duration: 35,
+    contentUrl: '/storage/html.mp4',
     thumbnailUrl: '/lesson-thumb-7.png',
     order: 1,
     isDownloaded: false,
@@ -240,9 +246,10 @@ export async function loadMockData() {
       if (existing) {
         let needsUpdate = false;
 
-        if (!existing.contentUrl && lesson.contentUrl) {
-          console.log(`[v0] Updating lesson ${lesson.id} with contentUrl`);
-          existing.contentUrl = lesson.contentUrl;
+        // Repair: replace all video lesson URLs with the local storage one
+        if (existing.type === 'video' && existing.contentUrl !== '/storage/html.mp4') {
+          console.log(`[v0] Repairing lesson ${lesson.id} contentUrl to /storage/html.mp4`);
+          existing.contentUrl = '/storage/html.mp4';
           needsUpdate = true;
         }
 

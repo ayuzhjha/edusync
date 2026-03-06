@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { dbUtils, type Lesson } from '@/lib/db';
 import { apiService } from '@/lib/api';
 import { toast } from 'sonner';
+import { resolveContentUrl } from '@/lib/utils';
 
 export interface DownloadProgress {
     lessonId: string;
@@ -20,16 +21,7 @@ export interface UseDownloadReturn {
     removeCourse: (courseId: string) => Promise<void>;
 }
 
-/**
- * Resolves a lesson's contentUrl to a fully qualified URL.
- * The backend may return relative paths like "/storage/video.mp4"
- * or full URLs. This makes sure we always have a fetchable URL.
- */
-function resolveContentUrl(contentUrl: string): string {
-    if (contentUrl.startsWith('http')) return contentUrl;
-    const base = (process.env.NEXT_PUBLIC_API_URL || '').replace('/api', '');
-    return `${base}${contentUrl}`;
-}
+
 
 export function useDownload(): UseDownloadReturn {
     const [isDownloading, setIsDownloading] = useState(false);

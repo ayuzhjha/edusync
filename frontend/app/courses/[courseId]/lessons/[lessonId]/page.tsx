@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Loader2, ChevronLeft, ChevronRight, CheckCircle, Award } from 'lucide-react';
 import { toast } from 'sonner';
+import { resolveContentUrl } from '@/lib/utils';
 
 export default function LessonDetailPage() {
   const params = useParams();
@@ -251,11 +252,7 @@ export default function LessonDetailPage() {
               <VideoPlayer
                 title={lesson.title}
                 blobUrl={offlineBlobUrl || undefined}
-                contentUrl={
-                  lesson.contentUrl?.startsWith('/')
-                    ? `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${lesson.contentUrl}`
-                    : lesson.contentUrl
-                }
+                contentUrl={resolveContentUrl(lesson.contentUrl)}
                 duration={lesson.duration}
                 onComplete={handleMarkComplete}
               />

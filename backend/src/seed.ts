@@ -73,10 +73,8 @@ const seedDatabase = async () => {
                 for (const l of moduleLessons) {
                     let contentUrl = '/placeholder.mp4'; // Fallback
 
-                    if (l.title === 'What is HTML?') {
+                    if (l.type === 'video') {
                         contentUrl = '/storage/html.mp4';
-                    } else if (l.type === 'video') {
-                        contentUrl = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
                     } else if (l.type === 'quiz') {
                         contentUrl = `/quiz/${l.id}`; // Logical URL for quiz
                     } else if (l.type === 'pdf') {
