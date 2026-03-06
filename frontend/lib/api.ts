@@ -38,9 +38,9 @@ export const apiService = {
     const url = `${this.baseUrl}${endpoint}`;
     const token = await this.getToken();
 
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options?.headers,
+      ...((options?.headers as Record<string, string>) || {}),
     };
 
     if (token) {
@@ -49,7 +49,7 @@ export const apiService = {
 
     try {
       console.log(`[v0] API: ${method} ${endpoint}`);
-      
+
       const response = await fetch(url, {
         method,
         headers,
@@ -73,7 +73,7 @@ export const apiService = {
       }
 
       const result: APIResponse<T> = await response.json();
-      
+
       if (!result.success) {
         throw new APIError(400, result.error || 'API returned error');
       }
@@ -83,7 +83,7 @@ export const apiService = {
       if (error instanceof APIError) {
         throw error;
       }
-      
+
       // Network error or parsing error
       console.error('[v0] API error:', error);
       throw new APIError(0, error instanceof Error ? error.message : 'Network error', error);
@@ -115,8 +115,14 @@ export const apiService = {
     const token = await this.getToken();
     const headers: HeadersInit = {};
 
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    // Only attach token if it's an internal API call or a relative path
+    const isInternal =
+      url.startsWith('/') ||
+      url.startsWith(this.baseUrl) ||
+      (typeof window !== 'undefined' && url.startsWith(window.location.origin));
+
+    if (token && isInternal) {
+      (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
     }
 
     const response = await fetch(url, { headers });
@@ -153,7 +159,7 @@ export const apiService = {
       reader.releaseLock();
     }
 
-    return new Blob(chunks, { type: response.headers.get('content-type') || 'application/octet-stream' });
+    return new Blob(chunks as any as BlobPart[], { type: response.headers.get('content-type') || 'application/octet-stream' });
   },
 
   // Check if network is available
@@ -195,7 +201,7 @@ export async function fetchOfflineFirst<T>(
     // If online, fetch fresh data
     if (apiService.isOnline()) {
       const data = await fetchFn();
-      
+
       // Update cache
       if (db.table('cache')) {
         await db.table('cache').put({

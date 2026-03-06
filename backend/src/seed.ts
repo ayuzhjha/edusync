@@ -76,7 +76,7 @@ const seedDatabase = async () => {
                     if (l.title === 'What is HTML?') {
                         contentUrl = '/storage/html.mp4';
                     } else if (l.type === 'video') {
-                        contentUrl = 'https://www.w3schools.com/html/mov_bbb.mp4';
+                        contentUrl = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
                     } else if (l.type === 'quiz') {
                         contentUrl = `/quiz/${l.id}`; // Logical URL for quiz
                     } else if (l.type === 'pdf') {
