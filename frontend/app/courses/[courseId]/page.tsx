@@ -12,6 +12,9 @@ import { Card } from '@/components/ui/card';
 import { Loader2, Download, BookOpen, Clock, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { useDownload } from '@/hooks/useDownload';
+import { Progress as UIProgress } from '@/components/ui/progress';
+
 export default function CourseDetailPage() {
   const params = useParams();
   const courseId = params.courseId as string;
@@ -22,8 +25,9 @@ export default function CourseDetailPage() {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [progress, setProgress] = useState<Progress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [isFullyDownloaded, setIsFullyDownloaded] = useState(false);
+
+  const { isDownloading, overallPercent, downloadCourse, removeCourse } = useDownload();
 
   useEffect(() => {
     const loadCourseData = async () => {
@@ -78,39 +82,20 @@ export default function CourseDetailPage() {
     };
   }, [refreshProgress]);
 
-  const handleDownloadCourse = async () => {
-    setIsDownloading(true);
-    try {
-      if (isFullyDownloaded) {
-        // Remove downloads
-        for (const lesson of lessons) {
-          lesson.isDownloaded = false;
-          lesson.downloadedAt = undefined;
-          lesson.localBlobUrl = undefined;
-          await dbUtils.saveLesson(lesson);
-        }
-        setIsFullyDownloaded(false);
-        toast.success('Course removed from offline storage');
-      } else {
-        // Mark all lessons as downloaded
-        for (const lesson of lessons) {
-          lesson.isDownloaded = true;
-          lesson.downloadedAt = Date.now();
-          await dbUtils.saveLesson(lesson);
-        }
-        setIsFullyDownloaded(true);
-        toast.success(`${lessons.length} lessons saved for offline access!`);
-      }
-      // Reload lessons to reflect updated state
-      const updated = await dbUtils.getLessons(courseId);
-      setLessons(updated);
-    } catch (error) {
-      console.error('[v0] Download error:', error);
-      toast.error('Failed to update offline storage');
-    } finally {
-      setIsDownloading(false);
+  const handleDownloadToggle = async () => {
+    if (isFullyDownloaded) {
+      await removeCourse(courseId);
+      setIsFullyDownloaded(false);
+    } else {
+      await downloadCourse(courseId);
     }
+
+    // Refresh lessons
+    const updated = await dbUtils.getLessons(courseId);
+    setLessons(updated);
+    setIsFullyDownloaded(updated.length > 0 && updated.every(l => l.isDownloaded));
   };
+
 
   const completedCount = progress.filter((p) => p.completed).length;
   const completedMap: Record<string, boolean> = {};
@@ -169,7 +154,7 @@ export default function CourseDetailPage() {
             </div>
 
             <Button
-              onClick={handleDownloadCourse}
+              onClick={handleDownloadToggle}
               disabled={isDownloading}
               className={`whitespace-nowrap flex items-center gap-2 ${isFullyDownloaded
                 ? 'bg-green-600 hover:bg-red-600'
@@ -180,7 +165,7 @@ export default function CourseDetailPage() {
               {isDownloading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  {isFullyDownloaded ? 'Removing...' : 'Saving...'}
+                  {isFullyDownloaded ? 'Removing...' : `Downloading ${overallPercent}%`}
                 </>
               ) : isFullyDownloaded ? (
                 <>
@@ -195,6 +180,16 @@ export default function CourseDetailPage() {
               )}
             </Button>
           </div>
+
+          {isDownloading && (
+            <div className="mt-6">
+              <div className="flex justify-between text-xs text-blue-100 mb-1">
+                <span>Downloading course content for offline access...</span>
+                <span>{overallPercent}%</span>
+              </div>
+              <UIProgress value={overallPercent} className="h-1.5 bg-blue-400" />
+            </div>
+          )}
         </div>
 
         {/* Progress Stats */}
@@ -232,3 +227,4 @@ export default function CourseDetailPage() {
     </PrivateRoute>
   );
 }
+

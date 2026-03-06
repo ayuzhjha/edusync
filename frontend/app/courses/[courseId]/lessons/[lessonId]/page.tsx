@@ -30,6 +30,16 @@ export default function LessonDetailPage() {
   const [progress, setProgress] = useState<Progress | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isMarking, setIsMarking] = useState(false);
+  const [offlineBlobUrl, setOfflineBlobUrl] = useState<string | null>(null);
+
+  // Cleanup object URL on unmount
+  useEffect(() => {
+    return () => {
+      if (offlineBlobUrl) {
+        URL.revokeObjectURL(offlineBlobUrl);
+      }
+    };
+  }, [offlineBlobUrl]);
 
   useEffect(() => {
     const loadLessonData = async () => {
@@ -45,30 +55,38 @@ export default function LessonDetailPage() {
             const liveLesson = await apiService.get<Lesson>(`/student/lessons/${lessonId}`);
             if (liveLesson) {
               // Merge with existing local data to preserve string IDs for courseId/moduleId.
-              // Backend returns these as MongoDB ObjectIds which break Dexie queries.
               const processedLesson: Lesson = {
-                // Start with existing local lesson (preserves courseId, moduleId as strings)
                 ...(lessonData || {} as Lesson),
-                // Layer API data on top (updates title, contentUrl, etc.)
                 ...liveLesson,
-                // Always use the correct string IDs
                 id: liveLesson.id || (liveLesson as any)._id,
                 courseId: lessonData?.courseId || courseId,
                 moduleId: lessonData?.moduleId || liveLesson.moduleId,
-                // Preserve local-only fields
                 isDownloaded: lessonData?.isDownloaded ?? false,
-                localBlobUrl: lessonData?.localBlobUrl,
                 downloadedAt: lessonData?.downloadedAt,
               };
               await dbUtils.saveLesson(processedLesson);
               lessonData = processedLesson;
-              console.log('[v0] Synced lesson from backend');
             }
           } catch (apiError) {
             console.error('[v0] Error fetching live lesson:', apiError);
           }
         }
+
+        // If downloaded, load the actual blob from IndexedDB
+        if (lessonData?.isDownloaded) {
+          try {
+            const asset = await dbUtils.getOfflineAsset(lessonId);
+            if (asset && asset.blob) {
+              const url = URL.createObjectURL(asset.blob);
+              setOfflineBlobUrl(url);
+            }
+          } catch (assetError) {
+            console.error('[v0] Error loading offline asset:', assetError);
+          }
+        }
+
         setLesson(lessonData || null);
+
 
         // Load quiz if lesson is a quiz type
         if (lessonData?.type === 'quiz') {
@@ -232,7 +250,7 @@ export default function LessonDetailPage() {
             {lesson.type === 'video' && (
               <VideoPlayer
                 title={lesson.title}
-                blobUrl={lesson.localBlobUrl}
+                blobUrl={offlineBlobUrl || undefined}
                 contentUrl={
                   lesson.contentUrl?.startsWith('/')
                     ? `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${lesson.contentUrl}`
@@ -246,11 +264,12 @@ export default function LessonDetailPage() {
             {lesson.type === 'pdf' && (
               <PDFViewer
                 title={lesson.title}
-                blobUrl={lesson.localBlobUrl}
+                blobUrl={offlineBlobUrl || undefined}
                 pageCount={lesson.pageCount}
                 onComplete={handleMarkComplete}
               />
             )}
+
 
             {lesson.type === 'quiz' && quiz && (
               quizResult ? (
