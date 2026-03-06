@@ -17,9 +17,10 @@ export interface Course {
 }
 
 export interface OfflineAsset {
-  id: string; 
-  blob: Blob; 
-  mimeType: string;
+  id: string;        // lessonId
+  blob: Blob;        // The video file
+  mimeType?: string; // Corrected spelling (removed the extra 'e')
+  updatedAt?: number;
 }
 export interface Module {
   id: string;
@@ -44,10 +45,11 @@ export interface Lesson {
   localBlobUrl?: string; // Blob URL stored locally for offline access
   thumbnailUrl?: string;
   order: number;
-  isDownloaded: boolean;
+  isDownloaded?: boolean;
   downloadedAt?: number;
   size?: number; // file size in bytes
   createdAt: number;
+  isOffline?: Boolean;
 }
 
 export interface Quiz {
