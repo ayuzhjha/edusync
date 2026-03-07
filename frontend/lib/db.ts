@@ -148,7 +148,8 @@ export class EducationDB extends Dexie {
       syncQueue: 'id, userId, type, createdAt',
       sessions: 'id, userId',
       users: 'id, email',
-      assets: 'id'
+      assets: 'id',
+      attempts: '++id, quizId, synced'
     });
   }
 }
