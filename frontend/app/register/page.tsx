@@ -23,7 +23,7 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'student' | 'teacher'>('student');
+  const [role, setRole] = useState<'student' | 'teacher' | 'admin'>('student');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +53,9 @@ export default function RegisterPage() {
       await register(name, email, password, role);
 
       // Redirect to appropriate dashboard
-      if (role === 'teacher') {
+      if (role === 'admin') {
+        router.push('/admin/dashboard');
+      } else if (role === 'teacher') {
         router.push('/teacher/dashboard');
       } else {
         router.push('/dashboard');
@@ -102,13 +104,14 @@ export default function RegisterPage() {
                 <Label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
                   I am a...
                 </Label>
-                <Select value={role} onValueChange={(value) => setRole(value as 'student' | 'teacher')}>
+                <Select value={role} onValueChange={(value) => setRole(value as 'student' | 'teacher' | 'admin')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="student">Student</SelectItem>
                     <SelectItem value="teacher">Teacher</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

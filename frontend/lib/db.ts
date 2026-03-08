@@ -12,6 +12,7 @@ export interface Course {
   duration: number; // in minutes
   moduleCount: number;
   lessonCount: number;
+  enrolledStudents?: string[]; // user IDs of enrolled students
   createdAt: number;
   updatedAt: number;
 }
@@ -118,7 +119,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'student' | 'teacher';
+  role: 'student' | 'teacher' | 'admin';
   avatar?: string; // data-URL of profile picture
   createdAt: number;
 }
@@ -135,6 +136,11 @@ export interface UserAvatar {
   dataUrl: string;  // base64 data-URL
 }
 
+export interface Settings {
+  id: string;
+  maintenanceMode: boolean;
+}
+
 // Initialize Dexie database
 export class EducationDB extends Dexie {
   courses!: Table<Course>;
@@ -149,6 +155,7 @@ export class EducationDB extends Dexie {
   assets!: Table<OfflineAsset>;
   activityLog!: Table<ActivityLog>;
   avatars!: Table<UserAvatar>;
+  settings!: Table<Settings>;
 
   constructor() {
     super('EducationDB');
@@ -165,8 +172,8 @@ export class EducationDB extends Dexie {
       assets: 'id',
       attempts: '++id, quizId, synced'
     });
-    // Version 3: add activityLog and avatars tables
-    this.version(3).stores({
+    // Version 4: add settings and admin role support
+    this.version(4).stores({
       courses: 'id, category, level',
       modules: 'id, courseId',
       lessons: 'id, courseId, moduleId, type',
@@ -180,6 +187,7 @@ export class EducationDB extends Dexie {
       attempts: '++id, quizId, synced',
       activityLog: 'id, userId, date',
       avatars: 'userId',
+      settings: 'id'
     });
   }
 }
@@ -225,6 +233,15 @@ export const dbUtils = {
 
   async saveCourses(courses: Course[]): Promise<void> {
     await db.courses.bulkPut(courses);
+  },
+
+  async deleteCourse(id: string): Promise<void> {
+    await db.courses.delete(id);
+    // Also delete modules and lessons
+    const modules = await this.getModules(id);
+    for (const mod of modules) await db.modules.delete(mod.id);
+    const lessons = await db.lessons.where('courseId').equals(id).toArray();
+    for (const les of lessons) await db.lessons.delete(les.id);
   },
 
   // Module operations
@@ -379,6 +396,29 @@ export const dbUtils = {
 
   async saveUser(user: User): Promise<string> {
     return db.users.put(user);
+  },
+
+  async getUsers(): Promise<User[]> {
+    return db.users.toArray();
+  },
+
+  async deleteUser(id: string): Promise<void> {
+    await db.users.delete(id);
+  },
+
+  async updateUser(user: User): Promise<void> {
+    await db.users.put(user);
+  },
+
+  // Settings operations
+  async getSettings(): Promise<Settings> {
+    const settings = await db.settings.get('global');
+    return settings || { id: 'global', maintenanceMode: false };
+  },
+
+  async updateSettings(settings: Partial<Settings>): Promise<void> {
+    const current = await this.getSettings();
+    await db.settings.put({ ...current, ...settings });
   },
 
   // Avatar operations

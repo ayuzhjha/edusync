@@ -31,10 +31,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
   const getNavLinks = () => {
     if (!user) return [];
 
+    if (user.role === 'admin') {
+      return [
+        { href: '/admin/dashboard', label: 'Admin Dashboard' },
+      ];
+    }
+
     if (user.role === 'teacher') {
       return [
         { href: '/teacher/dashboard', label: 'Dashboard' },
-        { href: '/teacher/courses', label: 'Courses' },
       ];
     }
 
@@ -118,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
                     <p className="text-sm font-semibold text-gray-900">{user.name}</p>
                     <p className="text-xs text-gray-600">{user.email}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      {user.role === 'teacher' ? '👨‍🏫 Teacher' : '👨‍🎓 Student'}
+                      {user.role === 'admin' ? '🛡️ Admin' : user.role === 'teacher' ? '👨‍🏫 Teacher' : '👨‍🎓 Student'}
                     </p>
                   </div>
                   <DropdownMenuSeparator />

@@ -7,37 +7,65 @@ import { PageWrapper } from '@/components/PageWrapper';
 import { db, dbUtils, type Course } from '@/lib/db';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Loader2, Plus, BookOpen, BarChart3, Users } from 'lucide-react';
+import { Loader2, Plus, BookOpen, BarChart3, Users, Edit, Trash2 } from 'lucide-react';
 import { loadMockData } from '@/lib/mockDataLoader';
+import { CourseModal } from '@/components/CourseModal';
+import { StudentsModal } from '@/components/StudentsModal';
 
 export default function TeacherDashboardPage() {
   const { user } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        setIsLoading(true);
-        await loadMockData();
-        const fetchedCourses = await dbUtils.getCourses();
-        // Standardize instructor field
-        const processedCourses = fetchedCourses.map(c => ({
-          ...c,
-          instructor: typeof c.instructor === 'object' && c.instructor !== null
-            ? (c.instructor as any).name
-            : c.instructor
-        }));
-        setCourses(processedCourses);
-      } catch (error) {
-        console.error('[v0] Error loading teacher dashboard:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
+  const [isStudentsModalOpen, setIsStudentsModalOpen] = useState(false);
+  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
+  const [selectedCourseForStudents, setSelectedCourseForStudents] = useState<Course | null>(null);
 
+  const loadDashboard = async () => {
+    try {
+      setIsLoading(true);
+      await loadMockData();
+      const fetchedCourses = await dbUtils.getCourses();
+      // Standardize instructor field
+      const processedCourses = fetchedCourses.map(c => ({
+        ...c,
+        instructor: typeof c.instructor === 'object' && c.instructor !== null
+          ? (c.instructor as any).name
+          : c.instructor
+      }));
+      setCourses(processedCourses);
+    } catch (error) {
+      console.error('[v0] Error loading teacher dashboard:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadDashboard();
   }, []);
+
+  const handleCreateCourse = () => {
+    setEditingCourse(null);
+    setIsCourseModalOpen(true);
+  };
+
+  const handleEditCourse = (course: Course) => {
+    setEditingCourse(course);
+    setIsCourseModalOpen(true);
+  };
+
+  const handleManageStudents = (course: Course) => {
+    setSelectedCourseForStudents(course);
+    setIsStudentsModalOpen(true);
+  };
+
+  const handleDeleteCourse = async (courseId: string) => {
+    if (!confirm('Are you sure you want to delete this course?')) return;
+    await dbUtils.deleteCourse(courseId);
+    loadDashboard();
+  };
 
   if (isLoading) {
     return (
@@ -62,7 +90,7 @@ export default function TeacherDashboardPage() {
             </h2>
             <p className="text-gray-600 mt-2">Manage your courses and track student progress</p>
           </div>
-          <Button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+          <Button onClick={handleCreateCourse} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
             <Plus className="w-4 h-4" />
             Create Course
           </Button>
@@ -132,13 +160,17 @@ export default function TeacherDashboardPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">{course.lessonCount || 0}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">—</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{course.enrolledStudents?.length || 0}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">Edit</Button>
-                        <Button variant="outline" size="sm" className="flex items-center gap-1">
-                          <BarChart3 className="w-4 h-4" />
-                          View Progress
+                        <Button variant="outline" size="sm" onClick={() => handleEditCourse(course)}>
+                          <Edit className="w-4 h-4 mr-1" /> Edit
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleManageStudents(course)}>
+                          <Users className="w-4 h-4 mr-1" /> Students
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={() => handleDeleteCourse(course.id)} className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                          <Trash2 className="w-4 h-4 mr-1" /> Delete
                         </Button>
                       </div>
                     </td>
@@ -148,6 +180,28 @@ export default function TeacherDashboardPage() {
             </table>
           </div>
         </Card>
+
+        {isCourseModalOpen && (
+          <CourseModal
+            course={editingCourse}
+            instructorName={user?.name || ''}
+            onClose={() => setIsCourseModalOpen(false)}
+            onUpdate={() => {
+              setIsCourseModalOpen(false);
+              loadDashboard();
+            }}
+          />
+        )}
+
+        {isStudentsModalOpen && selectedCourseForStudents && (
+          <StudentsModal
+            course={selectedCourseForStudents}
+            onClose={() => setIsStudentsModalOpen(false)}
+            onUpdate={() => {
+              loadDashboard();
+            }}
+          />
+        )}
       </PageWrapper>
     </PrivateRoute>
   );
