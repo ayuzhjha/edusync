@@ -64,12 +64,28 @@ export default function DashboardPage() {
 
         // Fetch courses from local DB
         const fetchedCourses = await dbUtils.getCourses();
-        setCourses(fetchedCourses);
+
+        // Compute real lessonCount from actual lessons in the DB for each course
+        const coursesWithRealLessonCount = await Promise.all(
+          fetchedCourses.map(async (course) => {
+            const lessons = await dbUtils.getLessons(course.id);
+            const realCount = lessons.length;
+            if (realCount > 0 && realCount !== course.lessonCount) {
+              // Persist the corrected value so other pages stay consistent
+              const updated = { ...course, lessonCount: realCount };
+              await dbUtils.saveCourse(updated);
+              return updated;
+            }
+            return course;
+          })
+        );
+
+        setCourses(coursesWithRealLessonCount);
 
         // Fetch progress for each course
         if (user) {
           const progressMap: Record<string, Progress[]> = {};
-          for (const course of fetchedCourses) {
+          for (const course of coursesWithRealLessonCount) {
             const progress = await dbUtils.getProgress(user.id, course.id);
             progressMap[course.id] = progress;
           }
