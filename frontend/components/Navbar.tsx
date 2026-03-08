@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Menu, LogOut, User, BookOpen } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, LogOut, User, BookOpen, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { SyncStatusIndicator } from './SyncStatusIndicator';
 import {
@@ -22,6 +23,12 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) => {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -52,7 +59,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
   const navLinks = getNavLinks();
 
   return (
-    <nav className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-30">
+    <nav className="sticky top-0 bg-background border-b border-border shadow-[0_0_15px_rgba(0,255,255,0.1)] z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -77,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
               <a
                 key={link.href}
                 href={link.href}
-                className="text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                className="text-foreground hover:text-primary font-bold tracking-widest transition-colors uppercase text-sm"
               >
                 {link.label}
               </a>
@@ -112,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
                         className="w-8 h-8 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                      <div className="w-8 h-8 bg-primary/20 border border-primary text-primary rounded-full flex items-center justify-center font-bold">
                         {user.name.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -131,6 +138,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
                     <User className="w-4 h-4 mr-2" />
                     Profile
                   </DropdownMenuItem>
+                  {mounted && (
+                    <DropdownMenuItem 
+                      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    >
+                      {theme === 'dark' ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
+                      {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                     <LogOut className="w-4 h-4 mr-2" />

@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Rajdhani, Share_Tech_Mono } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const fontRajdhani = Rajdhani({ 
+  subsets: ["latin"], 
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-rajdhani' 
+});
+
+const fontShareTech = Share_Tech_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  variable: '--font-share-tech'
+});
 
 export const metadata: Metadata = {
   title: 'EduSync - Offline Education Platform',
@@ -68,7 +77,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased">
+      <body className={`${fontRajdhani.variable} ${fontShareTech.variable} ${fontRajdhani.className} font-sans antialiased bg-background text-foreground`}>
         <Providers>
           {children}
         </Providers>

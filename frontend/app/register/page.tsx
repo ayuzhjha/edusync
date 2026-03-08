@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BookOpen, AlertCircle, Loader2 } from 'lucide-react';
+import { BookOpen, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -26,6 +26,7 @@ export default function RegisterPage() {
   const [role, setRole] = useState<'student' | 'teacher' | 'admin'>('student');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,21 +70,21 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="bg-blue-600 text-white p-3 rounded-lg">
+            <div className="bg-primary text-primary-foreground p-3 rounded-lg hud-border">
               <BookOpen className="w-8 h-8" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Join EduSync</h1>
-          <p className="text-gray-600 mt-2">Create your account to start learning</p>
+          <h1 className="text-3xl font-bold text-foreground">Join EduSync</h1>
+          <p className="text-muted-foreground mt-2">Create your account to start learning</p>
         </div>
 
         {/* Registration Form */}
-        <Card>
+        <Card className="hud-border bg-card">
           <CardHeader>
             <CardTitle>Create Account</CardTitle>
             <CardDescription>
@@ -126,9 +127,9 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
+                  placeholder="Your name"
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full bg-input"
                 />
               </div>
 
@@ -142,9 +143,9 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  placeholder="Email"
                   disabled={isLoading}
-                  className="w-full"
+                  className="w-full bg-input"
                 />
               </div>
 
@@ -153,23 +154,32 @@ export default function RegisterPage() {
                 <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                   Password
                 </Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  disabled={isLoading}
-                  className="w-full"
-                />
-                <p className="text-xs text-gray-500 mt-1">At least 6 characters</p>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    disabled={isLoading}
+                    className="w-full pr-10 bg-input"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">At least 6 characters</p>
               </div>
 
               {/* Submit Button */}
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2 rounded-lg font-bold transition-colors flex items-center justify-center gap-2 uppercase tracking-widest"
               >
                 {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                 {isLoading ? 'Creating Account...' : 'Sign Up'}
@@ -177,9 +187,9 @@ export default function RegisterPage() {
             </form>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-600 mt-4">
+            <p className="text-center text-sm text-muted-foreground mt-4">
               Already have an account?{' '}
-              <a href="/login" className="text-blue-600 hover:text-blue-700 font-medium">
+              <a href="/login" className="text-primary hover:underline font-bold">
                 Sign in
               </a>
             </p>
@@ -188,13 +198,13 @@ export default function RegisterPage() {
 
         {/* Benefits */}
         <div className="mt-8 grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">📚</p>
-            <p className="text-sm text-gray-600 mt-2">Access hundreds of courses</p>
+          <div className="bg-card hud-border rounded-lg p-4 text-center">
+            <p className="text-2xl font-bold text-foreground">📚</p>
+            <p className="text-sm text-muted-foreground mt-2">Access hundreds of courses</p>
           </div>
-          <div className="bg-white rounded-lg p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">📱</p>
-            <p className="text-sm text-gray-600 mt-2">Learn offline anytime</p>
+          <div className="bg-card hud-border rounded-lg p-4 text-center">
+            <p className="text-2xl font-bold text-foreground">📱</p>
+            <p className="text-sm text-muted-foreground mt-2">Learn offline anytime</p>
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { BookOpen, AlertCircle, Loader2 } from 'lucide-react';
+import { BookOpen, AlertCircle, Loader2, Eye, EyeOff } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function LoginPage() {
@@ -18,6 +18,7 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -53,31 +54,31 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <div className="bg-blue-600 text-white p-3 rounded-lg">
+            <div className="bg-primary text-primary-foreground p-3 rounded-lg hud-border">
               <BookOpen className="w-8 h-8" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">EduSync</h1>
-          <p className="text-gray-600 mt-2">Learn anytime, anywhere</p>
+          <h1 className="text-3xl font-bold text-foreground">EduSync</h1>
+          <p className="text-muted-foreground mt-2">Learn anytime, anywhere</p>
         </div>
 
         {/* Demo Credentials */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-sm font-semibold text-blue-900 mb-2">Demo Credentials:</p>
-          <div className="text-sm text-blue-800 space-y-1">
-            <p><strong>Student:</strong> student@example.com / password123</p>
-            <p><strong>Teacher:</strong> teacher@example.com / password123</p>
-            <p><strong>Admin:</strong> admin@example.com / password123</p>
+        <div className="bg-card hud-border rounded-lg p-4 mb-6">
+          <p className="text-sm font-bold text-primary mb-2">Demo Credentials:</p>
+          <div className="text-sm text-foreground space-y-1">
+            <p><strong className="text-primary-foreground/90">Student:</strong> student@example.com / password123</p>
+            <p><strong className="text-primary-foreground/90">Teacher:</strong> teacher@example.com / password123</p>
+            <p><strong className="text-primary-foreground/90">Admin:</strong> admin@example.com / password123</p>
           </div>
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-card hud-border rounded-lg p-6">
           {error && (
             <Alert className="mb-4 border-red-200 bg-red-50">
               <AlertCircle className="h-4 w-4 text-red-600" />
@@ -96,26 +97,35 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder="Email"
                 disabled={isLoading}
-                className="w-full"
+                className="w-full bg-input"
               />
             </div>
 
             {/* Password */}
             <div>
-              <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
                 Password
               </Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                disabled={isLoading}
-                className="w-full"
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  disabled={isLoading}
+                  className="w-full pr-10 bg-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             {/* Remember Me */}
@@ -134,7 +144,7 @@ export default function LoginPage() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-2 rounded-lg font-bold transition-colors flex items-center justify-center gap-2 uppercase tracking-widest"
             >
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
               {isLoading ? 'Logging in...' : 'Sign In'}
@@ -142,9 +152,9 @@ export default function LoginPage() {
           </form>
 
           {/* Register Link */}
-          <p className="text-center text-sm text-gray-600 mt-4">
+          <p className="text-center text-sm text-muted-foreground mt-4">
             Don't have an account?{' '}
-            <a href="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/register" className="text-primary font-bold hover:underline">
               Sign up
             </a>
           </p>
@@ -152,17 +162,17 @@ export default function LoginPage() {
 
         {/* Features */}
         <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-2xl font-bold text-gray-900">📚</p>
-            <p className="text-sm text-gray-600 mt-1">100+ Courses</p>
+          <div className="bg-card hud-border py-4 rounded-lg">
+            <p className="text-2xl font-bold text-foreground">📚</p>
+            <p className="text-xs text-muted-foreground mt-1 tracking-widest">100+ COURSES</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">📱</p>
-            <p className="text-sm text-gray-600 mt-1">Offline Access</p>
+          <div className="bg-card hud-border py-4 rounded-lg">
+            <p className="text-2xl font-bold text-foreground">📱</p>
+            <p className="text-xs text-muted-foreground mt-1 tracking-widest">OFFLINE</p>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">⚡</p>
-            <p className="text-sm text-gray-600 mt-1">Instant Sync</p>
+          <div className="bg-card hud-border py-4 rounded-lg">
+            <p className="text-2xl font-bold text-foreground">⚡</p>
+            <p className="text-xs text-muted-foreground mt-1 tracking-widest">SYNC</p>
           </div>
         </div>
       </div>
