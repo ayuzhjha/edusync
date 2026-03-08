@@ -7,7 +7,7 @@ import { Progress as ProgressBar } from '@/components/ui/progress';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Clock, BookOpen } from 'lucide-react';
+import { Download, Clock } from 'lucide-react';
 
 interface CourseCardProps {
   course: Course;
@@ -38,8 +38,16 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progress = [], i
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
       {/* Course Thumbnail */}
-      <div className="w-full h-40 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white">
-        <BookOpen className="w-12 h-12 opacity-70" />
+      <div className="w-full h-40 relative overflow-hidden bg-gradient-to-br from-blue-400 to-blue-600">
+        <img
+          src="/webdev.png"
+          alt={course.title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            // Hide broken image and reveal fallback gradient + icon
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
+        />
       </div>
 
       {/* Course Content */}
