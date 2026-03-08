@@ -1,8 +1,8 @@
-# EduLearn: Offline-First Education PWA - Architecture Documentation
+# EduSync: Offline-First Education PWA - Architecture Documentation
 
 ## Project Overview
 
-EduLearn is a comprehensive Progressive Web App (PWA) built with Next.js 16 that enables seamless offline-first education. Users can access courses, lessons, quizzes, and complete their learning journey entirely offline, with automatic synchronization when connectivity returns.
+EduSync is a comprehensive Progressive Web App (PWA) built with Next.js 16 that enables seamless offline-first education. Users can access courses, lessons, quizzes, and complete their learning journey entirely offline, with automatic synchronization when connectivity returns.
 
 **Key Capabilities:**
 - Full offline functionality after initial visit

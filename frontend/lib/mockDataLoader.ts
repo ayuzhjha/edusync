@@ -1,4 +1,4 @@
-import { db, dbUtils, type Course, type Lesson, type Quiz, type Module } from './db';
+import { db, dbUtils, type Course, type Lesson, type Quiz, type Module, type Progress } from './db';
 
 // Mock data structures
 const mockCourses: Course[] = [
@@ -44,19 +44,19 @@ const mockCourses: Course[] = [
     createdAt: 1704067200000,
     updatedAt: 1704067200000,
   },
-{
-  id: 'course-4',
-  title: 'Mobile App Dev with React Native',
-  description: 'Build cross-platform mobile apps using React Native and Expo.',
-  instructor: 'Alex Rivera',
-  category: 'Mobile Development',
-  level: 'intermediate',
-  duration: 1600,
-  moduleCount: 4,
-  lessonCount: 12,
-  createdAt: 1704067200000,
-  updatedAt: 1704067200000,
-},
+  {
+    id: 'course-4',
+    title: 'Mobile App Dev with React Native',
+    description: 'Build cross-platform mobile apps using React Native and Expo.',
+    instructor: 'Alex Rivera',
+    category: 'Mobile Development',
+    level: 'intermediate',
+    duration: 1600,
+    moduleCount: 4,
+    lessonCount: 12,
+    createdAt: 1704067200000,
+    updatedAt: 1704067200000,
+  },
 ];
 
 const mockModules: Module[] = [
@@ -120,75 +120,76 @@ const mockQuizzes: Quiz[] = [
       { id: 'q6', text: 'Which HTML attribute is used for inline styles?', options: ['font', 'class', 'style', 'styles'], correctAnswer: 2 },
       { id: 'q7', text: 'Which character is used to indicate an end tag?', options: ['<', '/', '*', '^'], correctAnswer: 1 },
       { id: 'q8', text: 'How do you call a function named "myFunction"?', options: ['call myFunction()', 'myFunction()', 'call function myFunction()', 'execute myFunction()'], correctAnswer: 1 },
-      {id: 'q9', 
-      text: 'How can you add a comment in JS?', 
-      options: ['// comment', '/* comment */', '# comment', 'Both A and B'], 
-      correctAnswer: 3 
+      {
+        id: 'q9',
+        text: 'How can you add a comment in JS?',
+        options: ['// comment', '/* comment */', '# comment', 'Both A and B'],
+        correctAnswer: 3
       },
       { id: 'q10', text: 'Which event occurs when a user clicks on an HTML element?', options: ['onmouseclick', 'onchange', 'onclick', 'onmouseover'], correctAnswer: 2 },
     ],
     createdAt: Date.now()
   },
   {
-  id: 'quiz-react',
-  courseId: 'course-2',
-  lessonId: 'lesson-2-quiz',
-  title: 'Advanced React Patterns Quiz',
-  passingScore: 70,
-  questions: [
-    { id: '2q1', text: 'What is the primary use of useMemo?', options: ['Side effects', 'Memoizing expensive calculations', 'DOM access', 'State management'], correctAnswer: 1 },
-    { id: '2q2', text: 'Which hook is used to handle side effects in functional components?', options: ['useState', 'useContext', 'useEffect', 'useReducer'], correctAnswer: 2 },
-    { id: '2q3', text: 'What does "Lifting State Up" mean?', options: ['Moving state to a child', 'Moving state to the closest common ancestor', 'Deleting state', 'Using Redux'], correctAnswer: 1 },
-    { id: '2q4', text: 'How do you prevent a functional component from re-rendering if props haven\'t changed?', options: ['useMemo', 'React.memo()', 'shouldComponentUpdate', 'useCallback'], correctAnswer: 1 },
-    { id: '2q5', text: 'What is the purpose of "Forwarding Refs"?', options: ['To pass refs to parent', 'To pass refs through a component to a child', 'To avoid using refs', 'To trigger re-renders'], correctAnswer: 1 },
-    { id: '2q6', text: 'In useReducer, what is the "dispatch" function used for?', options: ['To fetch data', 'To send an action to the reducer', 'To reset the state', 'To connect to the DOM'], correctAnswer: 1 },
-    { id: '2q7', text: 'What is a "Higher-Order Component"?', options: ['A component that returns a hook', 'A function that takes a component and returns a new component', 'The top-most component in the tree', 'A class component'], correctAnswer: 1 },
-    { id: '2q8', text: 'Which hook should you use for a mutable value that doesn\'t trigger a re-render?', options: ['useState', 'useRef', 'useMemo', 'useReducer'], correctAnswer: 1 },
-    { id: '2q9', text: 'What is "Prop Drilling"?', options: ['A way to optimize props', 'Passing data through many layers of components', 'Using TypeScript with props', 'Removing props'], correctAnswer: 1 },
-    { id: '2q10', text: 'What does the "key" prop help React do?', options: ['Style elements', 'Identify which items have changed, been added, or removed', 'Access the database', 'Set the unique ID of a user'], correctAnswer: 1 }
-  ],
-  createdAt: Date.now()
-},
-{
-  id: 'quiz-ds',
-  courseId: 'course-3',
-  lessonId: 'lesson-3-quiz',
-  title: 'Data Science Fundamentals Quiz',
-  passingScore: 70,
-  questions: [
-    { id: '3q1', text: 'Which library is used for data manipulation?', options: ['Django', 'Pandas', 'Matplotlib', 'Requests'], correctAnswer: 1 },
-    { id: '3q2', text: 'What does CSV stand for?', options: ['Common System Values', 'Comma Separated Values', 'Computer Scientific Variable', 'Control Set View'], correctAnswer: 1 },
-    { id: '3q3', text: 'In Machine Learning, what is "Supervised Learning"?', options: ['Learning without data', 'Learning from labeled data', 'Learning from unlabelled data', 'A type of hardware'], correctAnswer: 1 },
-    { id: '3q4', text: 'Which Python library is primarily used for visualization?', options: ['NumPy', 'Matplotlib', 'Keras', 'Flask'], correctAnswer: 1 },
-    { id: '3q5', text: 'What is a "Dataframe"?', options: ['A 1D array', 'A 2D labeled data structure', 'A type of plot', 'A file format'], correctAnswer: 1 },
-    { id: '3q6', text: 'What is the purpose of "Mean" in statistics?', options: ['The middle value', 'The most frequent value', 'The average value', 'The highest value'], correctAnswer: 2 },
-    { id: '3q7', text: 'Which algorithm is commonly used for Classification?', options: ['Linear Regression', 'Logistic Regression', 'K-Means', 'Mean Shift'], correctAnswer: 1 },
-    { id: '3q8', text: 'What is "Overfitting"?', options: ['A model that performs well on new data', 'A model that performs too well on training data but poorly on new data', 'Data that is too large', 'A fast algorithm'], correctAnswer: 1 },
-    { id: '3q9', text: 'What does SQL stand for?', options: ['Structured Query Language', 'Standard Quality List', 'Simple Query Logic', 'Sequential Query Line'], correctAnswer: 0 },
-    { id: '3q10', text: 'What is the main purpose of "Standardization"?', options: ['Scaling data to have a mean of 0 and SD of 1', 'Deleting data', 'Adding labels', 'Changing file formats'], correctAnswer: 0 }
-  ],
-  createdAt: Date.now()
-},
-{
-  id: 'quiz-rn',
-  courseId: 'course-4',
-  lessonId: 'lesson-4-quiz',
-  title: 'Mobile App Dev Quiz',
-  passingScore: 70,
-  questions: [
-    { id: '4q1', text: 'Which component is equivalent to <div>?', options: ['<Text>', '<View>', '<Image>', '<Div>'], correctAnswer: 1 },
-    { id: '4q2', text: 'Which command is used to start a new React Native project?', options: ['npm start', 'npx react-native init', 'git init', 'expo update'], correctAnswer: 1 },
-    { id: '4q3', text: 'How do you handle user text input in React Native?', options: ['<Input>', '<TextInput>', '<Form>', '<Text>'], correctAnswer: 1 },
-    { id: '4q4', text: 'Which layout system does React Native use?', options: ['Grid', 'Flexbox', 'Block', 'Inline'], correctAnswer: 1 },
-    { id: '4q5', text: 'How do you add styles in React Native?', options: ['CSS files', 'StyleSheet.create()', 'Sass', 'Inline HTML tags'], correctAnswer: 1 },
-    { id: '4q6', text: 'What is the purpose of "AsyncStorage"?', options: ['To speed up the app', 'To store small amounts of data locally', 'To fetch APIs', 'To style components'], correctAnswer: 1 },
-    { id: '4q7', text: 'Which component is used to display a scrolling list of items?', options: ['<ScrollView>', '<FlatList>', 'Both A and B', '<ListView>'], correctAnswer: 2 },
-    { id: '4q8', text: 'What is the default Flex direction in React Native?', options: ['Row', 'Column', 'Center', 'Stretch'], correctAnswer: 1 },
-    { id: '4q9', text: 'How do you navigate between screens in React Native?', options: ['React Navigation', 'Standard HTML <a> tags', 'Window.location', 'Native Linker'], correctAnswer: 0 },
-    { id: '4q10', text: 'What is the "Platform" module used for?', options: ['To detect the OS (iOS/Android)', 'To publish the app', 'To style the background', 'To connect to the database'], correctAnswer: 0 }
-  ],
-  createdAt: Date.now()
-}
+    id: 'quiz-react',
+    courseId: 'course-2',
+    lessonId: 'lesson-2-quiz',
+    title: 'Advanced React Patterns Quiz',
+    passingScore: 70,
+    questions: [
+      { id: '2q1', text: 'What is the primary use of useMemo?', options: ['Side effects', 'Memoizing expensive calculations', 'DOM access', 'State management'], correctAnswer: 1 },
+      { id: '2q2', text: 'Which hook is used to handle side effects in functional components?', options: ['useState', 'useContext', 'useEffect', 'useReducer'], correctAnswer: 2 },
+      { id: '2q3', text: 'What does "Lifting State Up" mean?', options: ['Moving state to a child', 'Moving state to the closest common ancestor', 'Deleting state', 'Using Redux'], correctAnswer: 1 },
+      { id: '2q4', text: 'How do you prevent a functional component from re-rendering if props haven\'t changed?', options: ['useMemo', 'React.memo()', 'shouldComponentUpdate', 'useCallback'], correctAnswer: 1 },
+      { id: '2q5', text: 'What is the purpose of "Forwarding Refs"?', options: ['To pass refs to parent', 'To pass refs through a component to a child', 'To avoid using refs', 'To trigger re-renders'], correctAnswer: 1 },
+      { id: '2q6', text: 'In useReducer, what is the "dispatch" function used for?', options: ['To fetch data', 'To send an action to the reducer', 'To reset the state', 'To connect to the DOM'], correctAnswer: 1 },
+      { id: '2q7', text: 'What is a "Higher-Order Component"?', options: ['A component that returns a hook', 'A function that takes a component and returns a new component', 'The top-most component in the tree', 'A class component'], correctAnswer: 1 },
+      { id: '2q8', text: 'Which hook should you use for a mutable value that doesn\'t trigger a re-render?', options: ['useState', 'useRef', 'useMemo', 'useReducer'], correctAnswer: 1 },
+      { id: '2q9', text: 'What is "Prop Drilling"?', options: ['A way to optimize props', 'Passing data through many layers of components', 'Using TypeScript with props', 'Removing props'], correctAnswer: 1 },
+      { id: '2q10', text: 'What does the "key" prop help React do?', options: ['Style elements', 'Identify which items have changed, been added, or removed', 'Access the database', 'Set the unique ID of a user'], correctAnswer: 1 }
+    ],
+    createdAt: Date.now()
+  },
+  {
+    id: 'quiz-ds',
+    courseId: 'course-3',
+    lessonId: 'lesson-3-quiz',
+    title: 'Data Science Fundamentals Quiz',
+    passingScore: 70,
+    questions: [
+      { id: '3q1', text: 'Which library is used for data manipulation?', options: ['Django', 'Pandas', 'Matplotlib', 'Requests'], correctAnswer: 1 },
+      { id: '3q2', text: 'What does CSV stand for?', options: ['Common System Values', 'Comma Separated Values', 'Computer Scientific Variable', 'Control Set View'], correctAnswer: 1 },
+      { id: '3q3', text: 'In Machine Learning, what is "Supervised Learning"?', options: ['Learning without data', 'Learning from labeled data', 'Learning from unlabelled data', 'A type of hardware'], correctAnswer: 1 },
+      { id: '3q4', text: 'Which Python library is primarily used for visualization?', options: ['NumPy', 'Matplotlib', 'Keras', 'Flask'], correctAnswer: 1 },
+      { id: '3q5', text: 'What is a "Dataframe"?', options: ['A 1D array', 'A 2D labeled data structure', 'A type of plot', 'A file format'], correctAnswer: 1 },
+      { id: '3q6', text: 'What is the purpose of "Mean" in statistics?', options: ['The middle value', 'The most frequent value', 'The average value', 'The highest value'], correctAnswer: 2 },
+      { id: '3q7', text: 'Which algorithm is commonly used for Classification?', options: ['Linear Regression', 'Logistic Regression', 'K-Means', 'Mean Shift'], correctAnswer: 1 },
+      { id: '3q8', text: 'What is "Overfitting"?', options: ['A model that performs well on new data', 'A model that performs too well on training data but poorly on new data', 'Data that is too large', 'A fast algorithm'], correctAnswer: 1 },
+      { id: '3q9', text: 'What does SQL stand for?', options: ['Structured Query Language', 'Standard Quality List', 'Simple Query Logic', 'Sequential Query Line'], correctAnswer: 0 },
+      { id: '3q10', text: 'What is the main purpose of "Standardization"?', options: ['Scaling data to have a mean of 0 and SD of 1', 'Deleting data', 'Adding labels', 'Changing file formats'], correctAnswer: 0 }
+    ],
+    createdAt: Date.now()
+  },
+  {
+    id: 'quiz-rn',
+    courseId: 'course-4',
+    lessonId: 'lesson-4-quiz',
+    title: 'Mobile App Dev Quiz',
+    passingScore: 70,
+    questions: [
+      { id: '4q1', text: 'Which component is equivalent to <div>?', options: ['<Text>', '<View>', '<Image>', '<Div>'], correctAnswer: 1 },
+      { id: '4q2', text: 'Which command is used to start a new React Native project?', options: ['npm start', 'npx react-native init', 'git init', 'expo update'], correctAnswer: 1 },
+      { id: '4q3', text: 'How do you handle user text input in React Native?', options: ['<Input>', '<TextInput>', '<Form>', '<Text>'], correctAnswer: 1 },
+      { id: '4q4', text: 'Which layout system does React Native use?', options: ['Grid', 'Flexbox', 'Block', 'Inline'], correctAnswer: 1 },
+      { id: '4q5', text: 'How do you add styles in React Native?', options: ['CSS files', 'StyleSheet.create()', 'Sass', 'Inline HTML tags'], correctAnswer: 1 },
+      { id: '4q6', text: 'What is the purpose of "AsyncStorage"?', options: ['To speed up the app', 'To store small amounts of data locally', 'To fetch APIs', 'To style components'], correctAnswer: 1 },
+      { id: '4q7', text: 'Which component is used to display a scrolling list of items?', options: ['<ScrollView>', '<FlatList>', 'Both A and B', '<ListView>'], correctAnswer: 2 },
+      { id: '4q8', text: 'What is the default Flex direction in React Native?', options: ['Row', 'Column', 'Center', 'Stretch'], correctAnswer: 1 },
+      { id: '4q9', text: 'How do you navigate between screens in React Native?', options: ['React Navigation', 'Standard HTML <a> tags', 'Window.location', 'Native Linker'], correctAnswer: 0 },
+      { id: '4q10', text: 'What is the "Platform" module used for?', options: ['To detect the OS (iOS/Android)', 'To publish the app', 'To style the background', 'To connect to the database'], correctAnswer: 0 }
+    ],
+    createdAt: Date.now()
+  }
 ];
 
 export async function loadMockData() {
@@ -313,6 +314,62 @@ export async function loadMockData() {
       await dbUtils.saveQuiz(quiz);
     }
     console.log('[v0] Loaded', mockQuizzes.length, 'quizzes');
+
+    // 3. Seed some initial progress for the current user if they exist
+    // This ensures the dashboard stats match the user's expectations (4 courses, 3 completed, 2 started)
+    const sessions = await db.sessions.toArray();
+    if (sessions.length > 0) {
+      const userId = sessions[0].userId;
+      const existingProgress = await db.progress.where('userId').equals(userId).count();
+
+      if (existingProgress === 0) {
+        console.log('[v0] Seeding initial progress for user', userId);
+
+        const initialProgress: Progress[] = [
+          // Course 1: 2 lessons completed
+          {
+            id: `${userId}-course-1-lesson-1-1`,
+            userId,
+            courseId: 'course-1',
+            lessonId: 'lesson-1-1',
+            completed: true,
+            completedAt: Date.now() - 86400000 * 2,
+            lastAccessedAt: Date.now() - 86400000 * 2,
+            timeSpent: 900,
+            synced: false,
+          },
+          {
+            id: `${userId}-course-1-lesson-1-2`,
+            userId,
+            courseId: 'course-1',
+            lessonId: 'lesson-1-2',
+            completed: true,
+            completedAt: Date.now() - 86400000,
+            lastAccessedAt: Date.now() - 86400000,
+            timeSpent: 1200,
+            synced: false,
+          },
+          // Course 2: 1 lesson completed (total 3 completed)
+          {
+            id: `${userId}-course-2-lesson-2-1`,
+            userId,
+            courseId: 'course-2',
+            lessonId: 'lesson-2-1',
+            completed: true,
+            completedAt: Date.now() - 43200000,
+            lastAccessedAt: Date.now() - 43200000,
+            timeSpent: 1800,
+            synced: false,
+          },
+          // Total: 2 courses started (Course 1 and Course 2)
+          // 3 lessons completed.
+          // Available courses: 4 (from mockCourses)
+        ];
+
+        await db.progress.bulkPut(initialProgress);
+        console.log('[v0] Seeded initial progress');
+      }
+    }
 
     console.log('[v0] Mock data loaded successfully');
   } catch (error) {

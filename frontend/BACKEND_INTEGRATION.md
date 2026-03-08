@@ -1,8 +1,8 @@
-# Backend Integration Guide for EduLearn
+# Backend Integration Guide for EduSync
 
 ## Quick Start: Connecting Your Backend
 
-This guide explains how to connect your backend API to the EduLearn frontend.
+This guide explains how to connect your backend API to the EduSync frontend.
 
 ---
 
@@ -422,7 +422,7 @@ All error responses should follow this format:
   "role": "student",
   "iat": 1234567890,
   "exp": 1234654290,
-  "iss": "edulearn"
+  "iss": "edusync"
 }
 ```
 

@@ -1,4 +1,4 @@
-# EduLearn PWA - Quick Start Guide
+# EduSync PWA - Quick Start Guide
 
 ## Getting Started
 

@@ -62,7 +62,7 @@ export default function LoginPage() {
               <BookOpen className="w-8 h-8" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">EduLearn</h1>
+          <h1 className="text-3xl font-bold text-gray-900">EduSync</h1>
           <p className="text-gray-600 mt-2">Learn anytime, anywhere</p>
         </div>
 

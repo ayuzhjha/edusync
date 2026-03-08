@@ -62,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
             )}
             <div className="flex items-center gap-2">
               <BookOpen className="w-6 h-6 text-blue-600" />
-              <span className="font-bold text-lg text-gray-900">EduLearn</span>
+              <span className="font-bold text-lg text-gray-900">EduSync</span>
             </div>
           </div>
 

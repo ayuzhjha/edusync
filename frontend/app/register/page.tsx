@@ -76,7 +76,7 @@ export default function RegisterPage() {
               <BookOpen className="w-8 h-8" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Join EduLearn</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Join EduSync</h1>
           <p className="text-gray-600 mt-2">Create your account to start learning</p>
         </div>
 

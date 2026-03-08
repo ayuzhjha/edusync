@@ -8,14 +8,14 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'EduLearn - Offline Education Platform',
+  title: 'EduSync - Offline Education Platform',
   description: 'Learn anytime, anywhere. Progressive Web App with offline support for seamless education access.',
   generator: 'v0.app',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'EduLearn',
+    title: 'EduSync',
   },
   icons: {
     icon: [
@@ -49,7 +49,7 @@ export default function RootLayout({
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="EduLearn" />
+        <meta name="apple-mobile-web-app-title" content="EduSync" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192x192.png" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />

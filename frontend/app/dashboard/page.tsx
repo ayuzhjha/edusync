@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card';
 import { db, dbUtils, type Course, type Progress } from '@/lib/db';
 import { loadMockData } from '@/lib/mockDataLoader';
 import { apiService } from '@/lib/api';
-import { Loader2 } from 'lucide-react';
+import { Loader2, BookOpen, CheckCircle, PlayCircle } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -117,9 +117,48 @@ export default function DashboardPage() {
           <p className="text-gray-600 mt-2">Continue your learning journey</p>
         </div>
 
+        {/* Stats Section - Moved from bottom with premium styling */}
+        <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+              </div>
+              <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Active</span>
+            </div>
+            <p className="text-sm text-gray-500 font-medium">Available Courses</p>
+            <p className="text-3xl font-bold text-gray-900 mt-1">{courses.length}</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-green-50 rounded-xl group-hover:bg-green-100 transition-colors">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              <span className="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Completed</span>
+            </div>
+            <p className="text-sm text-gray-500 font-medium">Lessons Completed</p>
+            <p className="text-3xl font-bold text-gray-900 mt-1">{totalCompleted}</p>
+          </div>
+
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-purple-50 rounded-xl group-hover:bg-purple-100 transition-colors">
+                <PlayCircle className="w-6 h-6 text-purple-600" />
+              </div>
+              <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">In Progress</span>
+            </div>
+            <p className="text-sm text-gray-500 font-medium">Courses Started</p>
+            <p className="text-3xl font-bold text-gray-900 mt-1">{inProgressCourses.length}</p>
+          </div>
+        </div>
+
         {/* Continue Learning — only courses with progress */}
         <div className="mb-12">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Continue Learning</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-bold text-gray-900">Continue Learning</h3>
+            <span className="text-sm text-blue-600 font-medium cursor-pointer hover:underline">View all progress</span>
+          </div>
           {inProgressCourses.length === 0 ? (
             <Card className="p-8 text-center">
               <p className="text-gray-600">No courses in progress yet — start a lesson below!</p>
@@ -157,21 +196,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Stats */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <p className="text-sm text-blue-600 font-semibold">Available Courses</p>
-            <p className="text-3xl font-bold text-blue-900 mt-2">{courses.length}</p>
-          </Card>
-          <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-            <p className="text-sm text-green-600 font-semibold">Lessons Completed</p>
-            <p className="text-3xl font-bold text-green-900 mt-2">{totalCompleted}</p>
-          </Card>
-          <Card className="p-6 bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-            <p className="text-sm text-purple-600 font-semibold">Courses Started</p>
-            <p className="text-3xl font-bold text-purple-900 mt-2">{inProgressCourses.length}</p>
-          </Card>
-        </div>
       </PageWrapper>
     </PrivateRoute>
   );

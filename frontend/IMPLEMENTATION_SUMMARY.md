@@ -1,4 +1,4 @@
-# EduLearn Frontend - Complete Implementation Summary
+# EduSync Frontend - Complete Implementation Summary
 
 ## What Has Been Built
 
@@ -367,7 +367,7 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 # Optional
 NEXT_PUBLIC_API_TIMEOUT=15000
 NEXT_PUBLIC_MAX_RETRY_ATTEMPTS=3
-NEXT_PUBLIC_APP_NAME=EduLearn
+NEXT_PUBLIC_APP_NAME=EduSync
 ```
 
 ---

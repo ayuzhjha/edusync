@@ -1,4 +1,4 @@
-# EduLearn - Offline-First Education PWA
+# EduSync - Offline-First Education PWA
 
 A comprehensive Progressive Web App (PWA) built with Next.js, React, and TypeScript that enables seamless learning both online and offline. The application features complete offline functionality, service worker caching, IndexedDB persistence, and automatic synchronization.
 

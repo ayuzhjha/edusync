@@ -1,4 +1,4 @@
-# EduLearn Frontend - Quick Reference Card
+# EduSync Frontend - Quick Reference Card
 
 ## File Locations Cheat Sheet
 

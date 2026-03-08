@@ -1,8 +1,8 @@
-# EduLearn Frontend Architecture - Complete Guide
+# EduSync Frontend Architecture - Complete Guide
 
 ## Overview
 
-The EduLearn frontend is a **Next.js 16 Progressive Web App (PWA)** built with an **offline-first architecture**. It's designed to function seamlessly whether users are online or offline, with automatic data synchronization when connectivity is restored.
+The EduSync frontend is a **Next.js 16 Progressive Web App (PWA)** built with an **offline-first architecture**. It's designed to function seamlessly whether users are online or offline, with automatic data synchronization when connectivity is restored.
 
 ### Key Philosophy
 - **Offline-First**: App reads from local IndexedDB first, syncs changes to backend when online
@@ -756,7 +756,7 @@ Create `.env.local`:
 
 ```
 NEXT_PUBLIC_API_URL=http://localhost:3001
-NEXT_PUBLIC_APP_NAME=EduLearn
+NEXT_PUBLIC_APP_NAME=EduSync
 NEXT_PUBLIC_MAX_RETRY_ATTEMPTS=3
 ```
 
@@ -907,7 +907,7 @@ Filter in DevTools: Type `[v0]` in console filter to see only app logs.
 
 ### Check IndexedDB
 
-Browser DevTools → Application → IndexedDB → EduLearn:
+Browser DevTools → Application → IndexedDB → EduSync:
 
 - View all stored courses, lessons, progress
 - See what's in the sync queue

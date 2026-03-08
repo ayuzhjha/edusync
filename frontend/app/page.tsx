@@ -33,7 +33,7 @@ export default function HomePage() {
             <BookOpen className="w-8 h-8" />
           </div>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">EduLearn</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">EduSync</h1>
         <p className="text-gray-600 mb-8">Loading your dashboard...</p>
         <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
       </div>
