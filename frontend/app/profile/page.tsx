@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { PrivateRoute } from '@/components/PrivateRoute';
