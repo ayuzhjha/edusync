@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Lesson } from '@/lib/db';
 import { Button } from '@/components/ui/button';
 import { Video, FileText, CheckCircle, Circle, HelpCircle } from 'lucide-react';
@@ -39,7 +39,7 @@ export const LessonList: React.FC<LessonListProps> = ({ lessons, courseId, compl
   return (
     <div className="space-y-2">
       {lessons.map((lesson) => (
-        <Link key={lesson.id} to={`/courses/${courseId}/lessons/${lesson.id}`}>
+        <Link key={lesson.id} href={`/courses/${courseId}/lessons/${lesson.id}`}>
           <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-colors cursor-pointer">
             {/* Icon */}
             <div className="flex-shrink-0">
