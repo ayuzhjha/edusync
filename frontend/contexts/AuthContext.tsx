@@ -37,7 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setTokenState(session.token);
             const userData = await dbUtils.getUser(session.userId);
             if (userData) {
-              setUserState(userData);
+              const avatar = await dbUtils.getAvatar(session.userId);
+              setUserState({ ...userData, avatar: avatar || undefined });
             }
           } else {
             // Token expired, clear it

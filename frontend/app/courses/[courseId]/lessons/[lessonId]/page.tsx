@@ -13,7 +13,7 @@ import { db, dbUtils, type Lesson, type Quiz, type Progress, type QuizResult } f
 import { apiService } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Loader2, ChevronLeft, ChevronRight, CheckCircle, Award } from 'lucide-react';
+import { Loader2, ChevronLeft, ChevronRight, CheckCircle, Award, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { resolveContentUrl } from '@/lib/utils';
 
@@ -130,6 +130,9 @@ export default function LessonDetailPage() {
         payload: { status: 'completed', lessonId, courseId },
       });
 
+      // Record activity locally
+      await dbUtils.recordActivity(user.id);
+
       setProgress(
         (await dbUtils.getLessonProgress(user.id, courseId, lessonId)) || null
       );
@@ -178,6 +181,9 @@ export default function LessonDetailPage() {
           submittedAt: quizResult.submittedAt
         },
       });
+
+      // Record activity locally
+      await dbUtils.recordActivity(user.id);
 
       // Mark lesson as complete
       if (score >= quiz.passingScore) {
@@ -268,32 +274,47 @@ export default function LessonDetailPage() {
             )}
 
 
-            {lesson.type === 'quiz' && quiz && (
-              quizResult ? (
-                <Card className="p-8 text-center bg-blue-50 border-blue-200">
+            {lesson.type === 'quiz' && (
+              !navigator.onLine ? (
+                <Card className="p-8 text-center bg-amber-50 border-amber-200">
                   <div className="flex justify-center mb-4">
-                    <Award className="w-16 h-16 text-blue-600" />
+                    <AlertCircle className="w-16 h-16 text-amber-600" />
                   </div>
-                  <h3 className="text-2xl font-bold text-blue-900">Quiz Completed</h3>
-                  <p className="text-4xl font-bold mt-2 text-blue-700">
-                    {quizResult.score}%
-                  </p>
+                  <h3 className="text-2xl font-bold text-amber-900">Offline Mode</h3>
                   <p className="text-gray-600 mt-4">
-                    You have already appeared for this quiz.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Date: {new Date(quizResult.submittedAt).toLocaleDateString()}
+                    Quizzes can only be accessed while you are online to ensure your progress is synced correctly.
                   </p>
                   <Button className="mt-6" onClick={() => router.back()}>
-                    Continue Learning
+                    Return to Course
                   </Button>
                 </Card>
-              ) : (
-                <QuizPlayer
-                  quiz={quiz}
-                  onSubmit={handleQuizSubmit}
-                  onComplete={() => router.back()}
-                />
+              ) : quiz && (
+                quizResult ? (
+                  <Card className="p-8 text-center bg-blue-50 border-blue-200">
+                    <div className="flex justify-center mb-4">
+                      <Award className="w-16 h-16 text-blue-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-blue-900">Quiz Completed</h3>
+                    <p className="text-4xl font-bold mt-2 text-blue-700">
+                      {quizResult.score}%
+                    </p>
+                    <p className="text-gray-600 mt-4">
+                      You have already appeared for this quiz.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      Date: {new Date(quizResult.submittedAt).toLocaleDateString()}
+                    </p>
+                    <Button className="mt-6" onClick={() => router.back()}>
+                      Continue Learning
+                    </Button>
+                  </Card>
+                ) : (
+                  <QuizPlayer
+                    quiz={quiz}
+                    onSubmit={handleQuizSubmit}
+                    onComplete={() => router.back()}
+                  />
+                )
               )
             )}
 

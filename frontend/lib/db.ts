@@ -17,8 +17,8 @@ export interface Course {
 }
 
 export interface OfflineAsset {
-  id: string; 
-  blob: Blob; 
+  id: string;
+  blob: Blob;
   mimeType: string;
 }
 export interface Module {
@@ -119,8 +119,20 @@ export interface User {
   email: string;
   name: string;
   role: 'student' | 'teacher';
-  avatar?: string;
+  avatar?: string; // data-URL of profile picture
   createdAt: number;
+}
+
+export interface ActivityLog {
+  id: string;       // `${userId}-${YYYY-MM-DD}`
+  userId: string;
+  date: string;     // 'YYYY-MM-DD'
+  count: number;    // number of lesson interactions that day
+}
+
+export interface UserAvatar {
+  userId: string;
+  dataUrl: string;  // base64 data-URL
 }
 
 // Initialize Dexie database
@@ -135,6 +147,8 @@ export class EducationDB extends Dexie {
   sessions!: Table<Session>;
   users!: Table<User>;
   assets!: Table<OfflineAsset>;
+  activityLog!: Table<ActivityLog>;
+  avatars!: Table<UserAvatar>;
 
   constructor() {
     super('EducationDB');
@@ -150,6 +164,22 @@ export class EducationDB extends Dexie {
       users: 'id, email',
       assets: 'id',
       attempts: '++id, quizId, synced'
+    });
+    // Version 3: add activityLog and avatars tables
+    this.version(3).stores({
+      courses: 'id, category, level',
+      modules: 'id, courseId',
+      lessons: 'id, courseId, moduleId, type',
+      quizzes: 'id, courseId, lessonId',
+      progress: 'id, userId, courseId, lessonId, synced',
+      quizResults: 'id, userId, courseId, synced',
+      syncQueue: 'id, userId, type, createdAt',
+      sessions: 'id, userId',
+      users: 'id, email',
+      assets: 'id',
+      attempts: '++id, quizId, synced',
+      activityLog: 'id, userId, date',
+      avatars: 'userId',
     });
   }
 }
@@ -168,13 +198,13 @@ export const dbUtils = {
       blob: blob,
       mimeType: blob.type
     });
-    
+
     // Update the lesson status to 'downloaded'
-    await db.lessons.update(lessonId, { 
+    await db.lessons.update(lessonId, {
       isDownloaded: true,
-      downloadedAt: Date.now() 
+      downloadedAt: Date.now()
     });
-    
+
     return lessonId;
   },
 
@@ -349,6 +379,50 @@ export const dbUtils = {
 
   async saveUser(user: User): Promise<string> {
     return db.users.put(user);
+  },
+
+  // Avatar operations
+  async getAvatar(userId: string): Promise<string | null> {
+    const rec = await db.avatars.get(userId);
+    return rec?.dataUrl ?? null;
+  },
+
+  async saveAvatar(userId: string, dataUrl: string): Promise<void> {
+    await db.avatars.put({ userId, dataUrl });
+    // Also persist on user record for convenience
+    const user = await db.users.get(userId);
+    if (user) await db.users.put({ ...user, avatar: dataUrl });
+  },
+
+  async removeAvatar(userId: string): Promise<void> {
+    await db.avatars.delete(userId);
+    const user = await db.users.get(userId);
+    if (user) {
+      const { avatar: _, ...rest } = user;
+      await db.users.put(rest as User);
+    }
+  },
+
+  // Activity log operations
+  async recordActivity(userId: string): Promise<void> {
+    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const id = `${userId}-${today}`;
+    const existing = await db.activityLog.get(id);
+    if (existing) {
+      await db.activityLog.put({ ...existing, count: existing.count + 1 });
+    } else {
+      await db.activityLog.put({ id, userId, date: today, count: 1 });
+    }
+  },
+
+  async getActivityLog(userId: string, days = 365): Promise<ActivityLog[]> {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - days);
+    const cutoffStr = cutoff.toISOString().slice(0, 10);
+    return db.activityLog
+      .where('userId').equals(userId)
+      .filter(a => a.date >= cutoffStr)
+      .toArray();
   },
 
   // Clear all data (for logout/reset)

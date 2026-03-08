@@ -1,13 +1,13 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { PageWrapper } from '@/components/PageWrapper';
-import { db, dbUtils, type Course, type Progress, type QuizResult } from '@/lib/db';
+import { db, dbUtils, type Course, type Progress, type QuizResult, type ActivityLog } from '@/lib/db';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Mail, Shield, BookOpen, CheckCircle, Award, Clock } from 'lucide-react';
+import { User, Mail, Shield, BookOpen, CheckCircle, Award, Clock, Camera, Upload, Trash2, Calendar } from 'lucide-react';
 import { Progress as ProgressBar } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 // Helper to render Cards if shadcn Card is not available, but let's assume standard structure or use basic divs
 const CustomCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
@@ -17,12 +17,14 @@ const CustomCard = ({ children, className = "" }: { children: React.ReactNode, c
 );
 
 export default function ProfilePage() {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const [courses, setCourses] = useState<Course[]>([]);
     const [allProgress, setAllProgress] = useState<Progress[]>([]);
     const [quizResults, setQuizResults] = useState<QuizResult[]>([]);
     const [lessonCounts, setLessonCounts] = useState<Record<string, number>>({});
+    const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const loadProfileData = async () => {
@@ -49,6 +51,10 @@ export default function ProfilePage() {
                 // Load all quiz results
                 const fetchedResults = await dbUtils.getQuizResults(user.id);
                 setQuizResults(fetchedResults);
+
+                // Load activity logs for heatmap (last 12 weeks for compact view)
+                const logs = await dbUtils.getActivityLog(user.id, 90);
+                setActivityLogs(logs);
             } catch (error) {
                 console.error('[v0] Error loading profile data:', error);
             } finally {
@@ -58,6 +64,34 @@ export default function ProfilePage() {
 
         loadProfileData();
     }, [user?.id]);
+
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !user) return;
+
+        // Limit to 2MB
+        if (file.size > 2 * 1024 * 1024) {
+            toast.error('Image size must be less than 2MB');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const dataUrl = reader.result as string;
+            await dbUtils.saveAvatar(user.id, dataUrl);
+            setUser({ ...user, avatar: dataUrl });
+            toast.success('Profile picture updated');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleRemoveAvatar = async () => {
+        if (!user) return;
+        await dbUtils.removeAvatar(user.id);
+        const { avatar: _, ...rest } = user;
+        setUser(rest);
+        toast.success('Profile picture removed');
+    };
 
     const getCourseProgress = (courseId: string) => {
         const courseProgress = allProgress.filter(p => p.courseId === courseId);
@@ -83,6 +117,27 @@ export default function ProfilePage() {
         ? Math.round(quizResults.reduce((acc, r) => acc + r.score, 0) / quizResults.length)
         : 0;
 
+    // Heatmap Logic
+    const generateHeatmap = () => {
+        const today = new Date();
+        const days = [];
+        // Last 12 weeks = 84 days
+        for (let i = 83; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dateStr = date.toISOString().slice(0, 10);
+            const activity = activityLogs.find(log => log.date === dateStr);
+            days.push({
+                date: dateStr,
+                count: activity?.count || 0,
+                dayOfWeek: date.getDay()
+            });
+        }
+        return days;
+    };
+
+    const heatmapDays = generateHeatmap();
+
     if (isLoading) {
         return (
             <PrivateRoute allowedRoles={['student', 'teacher']}>
@@ -98,11 +153,42 @@ export default function ProfilePage() {
     return (
         <PrivateRoute allowedRoles={['student', 'teacher']}>
             <PageWrapper showNav>
-                <div className="max-w-4xl mx-auto space-y-8 pb-12">
+                <div className="max-w-4xl mx-auto space-y-8 pb-12 px-4 md:px-0">
                     {/* Profile Header */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6">
-                        <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                            {user?.name.charAt(0).toUpperCase()}
+                    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6">
+                        <div className="relative group">
+                            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl font-bold overflow-hidden">
+                                {user?.avatar ? (
+                                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                                ) : (
+                                    user?.name.charAt(0).toUpperCase()
+                                )}
+                            </div>
+                            <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="p-1.5 bg-white/20 hover:bg-white/40 rounded-full text-white transition-colors"
+                                    title="Upload photo"
+                                >
+                                    <Camera className="w-4 h-4" />
+                                </button>
+                                {user?.avatar && (
+                                    <button
+                                        onClick={handleRemoveAvatar}
+                                        className="p-1.5 bg-red-500/60 hover:bg-red-500/80 rounded-full text-white transition-colors"
+                                        title="Remove photo"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                )}
+                            </div>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleAvatarUpload}
+                            />
                         </div>
                         <div className="text-center md:text-left flex-1">
                             <h1 className="text-3xl font-bold text-gray-900">{user?.name}</h1>
@@ -118,6 +204,45 @@ export default function ProfilePage() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Activity Heatmap */}
+                    <CustomCard className="p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-blue-600" />
+                                Learning Activity
+                            </h2>
+                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                                <span>Less</span>
+                                <div className="flex gap-1">
+                                    <div className="w-3 h-3 rounded-sm bg-gray-100"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-blue-200"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-blue-400"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-blue-600"></div>
+                                </div>
+                                <span>More</span>
+                            </div>
+                        </div>
+                        <div className="overflow-x-auto pb-2">
+                            <div className="grid grid-flow-col grid-rows-7 gap-1.5 min-w-[600px]">
+                                {heatmapDays.map((day, idx) => {
+                                    const intensity = day.count === 0 ? 'bg-gray-100' :
+                                        day.count < 3 ? 'bg-blue-200' :
+                                            day.count < 6 ? 'bg-blue-400' : 'bg-blue-600';
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={`w-3.5 h-3.5 rounded-sm ${intensity} cursor-default`}
+                                            title={`${day.count} activities on ${day.date}`}
+                                        ></div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-4 text-center">
+                            Activity recorded when lessons are completed or accessed.
+                        </p>
+                    </CustomCard>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Stats Overview */}
@@ -229,3 +354,4 @@ export default function ProfilePage() {
         </PrivateRoute>
     );
 }
+
