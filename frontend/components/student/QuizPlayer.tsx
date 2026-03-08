@@ -60,24 +60,24 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit, onComple
     return (
       <div className="space-y-6">
         {/* Result Card */}
-        <Card className={`p-8 text-center ${passed ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+        <Card className={`p-8 text-center ${passed ? 'bg-green-500/10 border-green-500/50' : 'bg-destructive/10 border-destructive/50'}`}>
           <div className={`flex justify-center mb-4`}>
             {passed ? (
-              <CheckCircle className="w-16 h-16 text-green-600" />
+              <CheckCircle className="w-16 h-16 text-green-500" />
             ) : (
-              <XCircle className="w-16 h-16 text-red-600" />
+              <XCircle className="w-16 h-16 text-destructive" />
             )}
           </div>
-          <h3 className={`text-2xl font-bold ${passed ? 'text-green-900' : 'text-red-900'}`}>
+          <h3 className={`text-2xl font-bold ${passed ? 'text-green-500' : 'text-red-900'}`}>
             {passed ? 'Passed!' : 'Not Passed'}
           </h3>
-          <p className={`text-4xl font-bold mt-2 ${passed ? 'text-green-700' : 'text-red-700'}`}>
+          <p className={`text-4xl font-bold mt-2 ${passed ? 'text-green-700' : 'text-destructive'}`}>
             {Math.round(score)}%
           </p>
-          <p className="text-gray-600 mt-4">
+          <p className="text-muted-foreground mt-4">
             You got {Math.round((score / 100) * quiz.questions.length)} out of {quiz.questions.length} questions correct
           </p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Passing score: {quiz.passingScore}%
           </p>
 
@@ -88,26 +88,26 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit, onComple
 
         {/* Question Review */}
         <div className="space-y-4">
-          <h3 className="font-semibold text-gray-900">Review Answers</h3>
+          <h3 className="font-semibold text-foreground">Review Answers</h3>
           {quiz.questions.map((question, qIndex) => {
             const isCorrect = answers[qIndex] === question.correctAnswer;
             return (
-              <Card key={qIndex} className={`p-4 ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+              <Card key={qIndex} className={`p-4 ${isCorrect ? 'border-green-500/50 bg-green-500/10' : 'border-destructive/50 bg-destructive/10'}`}>
                 <div className="flex gap-3">
                   <div className="flex-shrink-0">
                     {isCorrect ? (
-                      <CheckCircle className="w-5 h-5 text-green-600" />
+                      <CheckCircle className="w-5 h-5 text-green-500" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-red-600" />
+                      <XCircle className="w-5 h-5 text-destructive" />
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{question.text}</p>
-                    <p className="text-sm text-gray-600 mt-2">
+                    <p className="font-medium text-foreground">{question.text}</p>
+                    <p className="text-sm text-muted-foreground mt-2">
                       Your answer: <strong>{question.options[answers[qIndex]]}</strong>
                     </p>
                     {!isCorrect && (
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         Correct answer: <strong>{question.options[question.correctAnswer]}</strong>
                       </p>
                     )}
@@ -137,8 +137,8 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit, onComple
         {quiz.questions.map((question, qIndex) => (
           <Card key={qIndex} className="p-6">
             <div className="flex items-start justify-between mb-4">
-              <h3 className="font-semibold text-gray-900 flex-1">{question.text}</h3>
-              <span className="text-xs font-medium text-gray-500 ml-4">
+              <h3 className="font-semibold text-foreground flex-1">{question.text}</h3>
+              <span className="text-xs font-medium text-muted-foreground ml-4">
                 Q{qIndex + 1}/{quiz.questions.length}
               </span>
             </div>
@@ -154,7 +154,7 @@ export const QuizPlayer: React.FC<QuizPlayerProps> = ({ quiz, onSubmit, onComple
                     />
                     <Label
                       htmlFor={`q${qIndex}-option${oIndex}`}
-                      className="ml-3 font-normal cursor-pointer text-gray-700 flex-1"
+                      className="ml-3 font-normal cursor-pointer text-muted-foreground flex-1"
                     >
                       {option}
                     </Label>

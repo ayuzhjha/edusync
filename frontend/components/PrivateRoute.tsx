@@ -57,7 +57,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRol
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -68,10 +68,10 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRol
 
   if (maintenanceMode && user?.role !== 'admin') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-muted/50 p-4 text-center">
         <AlertTriangle className="w-16 h-16 text-yellow-500 mb-4" />
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Under Maintenance</h1>
-        <p className="text-gray-600 max-w-md">
+        <h1 className="text-3xl font-bold text-foreground mb-2">Under Maintenance</h1>
+        <p className="text-muted-foreground max-w-md">
           We are currently updating our systems to provide you with a better experience. Please check back later.
         </p>
       </div>

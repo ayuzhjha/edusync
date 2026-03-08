@@ -93,16 +93,16 @@ export default function RegisterPage() {
           </CardHeader>
           <CardContent>
             {error && (
-              <Alert className="mb-4 border-red-200 bg-red-50">
-                <AlertCircle className="h-4 w-4 text-red-600" />
-                <AlertDescription className="text-red-600">{error}</AlertDescription>
+              <Alert className="mb-4 border-destructive/50 bg-destructive/10">
+                <AlertCircle className="h-4 w-4 text-destructive" />
+                <AlertDescription className="text-destructive">{error}</AlertDescription>
               </Alert>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Role Selection */}
               <div>
-                <Label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="role" className="block text-sm font-medium text-muted-foreground mb-1">
                   I am a...
                 </Label>
                 <Select value={role} onValueChange={(value) => setRole(value as 'student' | 'teacher' | 'admin')}>
@@ -119,7 +119,7 @@ export default function RegisterPage() {
 
               {/* Name */}
               <div>
-                <Label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-1">
                   Full Name
                 </Label>
                 <Input
@@ -135,7 +135,7 @@ export default function RegisterPage() {
 
               {/* Email */}
               <div>
-                <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-1">
                   Email Address
                 </Label>
                 <Input
@@ -151,7 +151,7 @@ export default function RegisterPage() {
 
               {/* Password */}
               <div>
-                <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                <Label htmlFor="password" className="block text-sm font-medium text-muted-foreground mb-1">
                   Password
                 </Label>
                 <div className="relative">

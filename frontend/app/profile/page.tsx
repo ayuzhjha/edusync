@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 
 // Helper to render Cards if shadcn Card is not available, but let's assume standard structure or use basic divs
 const CustomCard = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <div className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden ${className}`}>
+    <div className={`bg-card rounded-xl shadow-sm border border-border overflow-hidden ${className}`}>
         {children}
     </div>
 );
@@ -145,7 +145,7 @@ export default function ProfilePage() {
             <PrivateRoute allowedRoles={['student', 'teacher']}>
                 <PageWrapper showNav>
                     <div className="flex items-center justify-center py-20">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                     </div>
                 </PageWrapper>
             </PrivateRoute>
@@ -157,9 +157,9 @@ export default function ProfilePage() {
             <PageWrapper showNav>
                 <div className="max-w-4xl mx-auto space-y-8 pb-12 px-4 md:px-0">
                     {/* Profile Header */}
-                    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-6">
+                    <div className="bg-card rounded-2xl p-6 md:p-8 shadow-sm border border-border flex flex-col md:flex-row items-center gap-6">
                         <div className="relative group">
-                            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-4xl font-bold overflow-hidden">
+                            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-primary-foreground text-4xl font-bold overflow-hidden">
                                 {user?.avatar ? (
                                     <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                                 ) : (
@@ -169,7 +169,7 @@ export default function ProfilePage() {
                             <div className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                 <button
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="p-1.5 bg-white/20 hover:bg-white/40 rounded-full text-white transition-colors"
+                                    className="p-1.5 bg-background/20 hover:bg-background/40 rounded-full text-primary-foreground transition-colors"
                                     title="Upload photo"
                                 >
                                     <Camera className="w-4 h-4" />
@@ -177,7 +177,7 @@ export default function ProfilePage() {
                                 {user?.avatar && (
                                     <button
                                         onClick={handleRemoveAvatar}
-                                        className="p-1.5 bg-red-500/60 hover:bg-red-500/80 rounded-full text-white transition-colors"
+                                        className="p-1.5 bg-destructive/60 hover:bg-red-500/80 rounded-full text-primary-foreground transition-colors"
                                         title="Remove photo"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -193,13 +193,13 @@ export default function ProfilePage() {
                             />
                         </div>
                         <div className="text-center md:text-left flex-1">
-                            <h1 className="text-3xl font-bold text-gray-900">{user?.name}</h1>
+                            <h1 className="text-3xl font-bold text-foreground">{user?.name}</h1>
                             <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-2">
-                                <div className="flex items-center gap-1.5 text-gray-600">
+                                <div className="flex items-center gap-1.5 text-muted-foreground">
                                     <Mail className="w-4 h-4" />
                                     <span className="text-sm">{user?.email}</span>
                                 </div>
-                                <div className="flex items-center gap-1.5 text-gray-600">
+                                <div className="flex items-center gap-1.5 text-muted-foreground">
                                     <Shield className="w-4 h-4" />
                                     <span className="text-sm capitalize">{user?.role}</span>
                                 </div>
@@ -210,17 +210,17 @@ export default function ProfilePage() {
                     {/* Activity Heatmap */}
                     <CustomCard className="p-6">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                                <Calendar className="w-5 h-5 text-blue-600" />
+                            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                                <Calendar className="w-5 h-5 text-primary" />
                                 Learning Activity
                             </h2>
-                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <span>Less</span>
                                 <div className="flex gap-1">
-                                    <div className="w-3 h-3 rounded-sm bg-gray-100"></div>
-                                    <div className="w-3 h-3 rounded-sm bg-blue-200"></div>
-                                    <div className="w-3 h-3 rounded-sm bg-blue-400"></div>
-                                    <div className="w-3 h-3 rounded-sm bg-blue-600"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-muted"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-primary/30"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-primary/60"></div>
+                                    <div className="w-3 h-3 rounded-sm bg-primary"></div>
                                 </div>
                                 <span>More</span>
                             </div>
@@ -228,9 +228,9 @@ export default function ProfilePage() {
                         <div className="overflow-x-auto pb-2">
                             <div className="grid grid-flow-col grid-rows-7 gap-1.5 min-w-[600px]">
                                 {heatmapDays.map((day, idx) => {
-                                    const intensity = day.count === 0 ? 'bg-gray-100' :
-                                        day.count < 3 ? 'bg-blue-200' :
-                                            day.count < 6 ? 'bg-blue-400' : 'bg-blue-600';
+                                    const intensity = day.count === 0 ? 'bg-muted' :
+                                        day.count < 3 ? 'bg-primary/30' :
+                                            day.count < 6 ? 'bg-primary/60' : 'bg-primary';
                                     return (
                                         <div
                                             key={idx}
@@ -241,7 +241,7 @@ export default function ProfilePage() {
                                 })}
                             </div>
                         </div>
-                        <p className="text-xs text-gray-500 mt-4 text-center">
+                        <p className="text-xs text-muted-foreground mt-4 text-center">
                             Activity recorded when lessons are completed or accessed.
                         </p>
                     </CustomCard>
@@ -250,61 +250,61 @@ export default function ProfilePage() {
                         {/* Stats Overview */}
                         <CustomCard className="p-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="p-2 bg-blue-50 rounded-lg">
-                                    <BookOpen className="w-5 h-5 text-blue-600" />
+                                <div className="p-2 bg-primary/10 rounded-lg">
+                                    <BookOpen className="w-5 h-5 text-primary" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-500">Started</span>
+                                <span className="text-sm font-medium text-muted-foreground">Started</span>
                             </div>
-                            <p className="text-2xl font-bold text-gray-900">{startedCourses.length}</p>
-                            <p className="text-xs text-gray-500 mt-1">Courses in progress</p>
+                            <p className="text-2xl font-bold text-foreground">{startedCourses.length}</p>
+                            <p className="text-xs text-muted-foreground mt-1">Courses in progress</p>
                         </CustomCard>
 
                         <CustomCard className="p-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="p-2 bg-green-50 rounded-lg">
-                                    <CheckCircle className="w-5 h-5 text-green-600" />
+                                <div className="p-2 bg-green-500/10 rounded-lg">
+                                    <CheckCircle className="w-5 h-5 text-green-500" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-500">Completed</span>
+                                <span className="text-sm font-medium text-muted-foreground">Completed</span>
                             </div>
-                            <p className="text-2xl font-bold text-gray-900">
+                            <p className="text-2xl font-bold text-foreground">
                                 {allProgress.filter(p => p.completed).length}
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">Lessons finished</p>
+                            <p className="text-xs text-muted-foreground mt-1">Lessons finished</p>
                         </CustomCard>
 
                         <CustomCard className="p-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="p-2 bg-purple-50 rounded-lg">
-                                    <Award className="w-5 h-5 text-purple-600" />
+                                <div className="p-2 bg-purple-500/10 rounded-lg">
+                                    <Award className="w-5 h-5 text-purple-500" />
                                 </div>
-                                <span className="text-sm font-medium text-gray-500">Avg. Score</span>
+                                <span className="text-sm font-medium text-muted-foreground">Avg. Score</span>
                             </div>
-                            <p className="text-2xl font-bold text-gray-900">{avgQuizScore}%</p>
-                            <p className="text-xs text-gray-500 mt-1">Across {quizResults.length} quizzes</p>
+                            <p className="text-2xl font-bold text-foreground">{avgQuizScore}%</p>
+                            <p className="text-xs text-muted-foreground mt-1">Across {quizResults.length} quizzes</p>
                         </CustomCard>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Course Progress */}
                         <section className="space-y-4">
-                            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                                 <Clock className="w-5 h-5" />
                                 Recent Courses
                             </h2>
                             <div className="space-y-3">
                                 {startedCourses.length === 0 ? (
-                                    <p className="text-gray-500 text-sm italic">No courses started yet.</p>
+                                    <p className="text-muted-foreground text-sm italic">No courses started yet.</p>
                                 ) : (
                                     startedCourses.map(course => {
                                         const percentage = getCourseProgress(course.id);
                                         return (
                                             <CustomCard key={course.id} className="p-4">
-                                                <p className="font-semibold text-gray-900 text-sm truncate">{course.title}</p>
+                                                <p className="font-semibold text-foreground text-sm truncate">{course.title}</p>
                                                 <div className="mt-3 flex items-center justify-between gap-4">
                                                     <div className="flex-1">
                                                         <ProgressBar value={percentage} className="h-1.5" />
                                                     </div>
-                                                    <span className="text-xs font-bold text-blue-600 w-8">{percentage}%</span>
+                                                    <span className="text-xs font-bold text-primary w-8">{percentage}%</span>
                                                 </div>
                                             </CustomCard>
                                         );
@@ -315,27 +315,27 @@ export default function ProfilePage() {
 
                         {/* Quiz Performance */}
                         <section className="space-y-4">
-                            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                                 <Award className="w-5 h-5" />
                                 Quiz Scores
                             </h2>
                             <div className="space-y-3">
                                 {quizResults.length === 0 ? (
-                                    <p className="text-gray-500 text-sm italic">No quizzes taken yet.</p>
+                                    <p className="text-muted-foreground text-sm italic">No quizzes taken yet.</p>
                                 ) : (
                                     quizResults.sort((a, b) => b.submittedAt - a.submittedAt).slice(0, 5).map(result => {
                                         const course = courses.find(c => c.id === result.courseId);
                                         return (
                                             <CustomCard key={result.id} className="p-4 flex items-center justify-between">
                                                 <div>
-                                                    <p className="font-semibold text-gray-900 text-sm truncate max-w-[180px]">
+                                                    <p className="font-semibold text-foreground text-sm truncate max-w-[180px]">
                                                         {course?.title || 'Course Activity'}
                                                     </p>
-                                                    <p className="text-[10px] text-gray-500">
+                                                    <p className="text-[10px] text-muted-foreground">
                                                         {new Date(result.submittedAt).toLocaleDateString()}
                                                     </p>
                                                 </div>
-                                                <div className={`px-2.5 py-1 rounded-full text-xs font-bold ${result.score >= 70 ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'
+                                                <div className={`px-2.5 py-1 rounded-full text-xs font-bold ${result.score >= 70 ? 'bg-green-500/20 text-green-700' : 'bg-orange-100 text-orange-700'
                                                     }`}>
                                                     {result.score}%
                                                 </div>
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                                     })
                                 )}
                                 {quizResults.length > 5 && (
-                                    <button className="text-sm text-blue-600 font-medium hover:underline w-full text-center">
+                                    <button className="text-sm text-primary font-medium hover:underline w-full text-center">
                                         View all quiz scores
                                     </button>
                                 )}

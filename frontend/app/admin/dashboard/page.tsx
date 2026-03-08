@@ -83,7 +83,7 @@ export default function AdminDashboardPage() {
       <PrivateRoute allowedRoles={['admin']}>
         <PageWrapper>
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         </PageWrapper>
       </PrivateRoute>
@@ -94,27 +94,27 @@ export default function AdminDashboardPage() {
     <PrivateRoute allowedRoles={['admin']}>
       <PageWrapper>
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">Admin Dashboard</h2>
-          <p className="text-gray-600 mt-2">Manage the platform, users, and courses.</p>
+          <h2 className="text-2xl font-bold text-foreground">Admin Dashboard</h2>
+          <p className="text-muted-foreground mt-2">Manage the platform, users, and courses.</p>
         </div>
 
-        <div className="flex border-b border-gray-200 mb-8 space-x-8">
+        <div className="flex border-b border-border mb-8 space-x-8">
           <button
-            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'courses' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'courses' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
             onClick={() => setActiveTab('courses')}
           >
             <BookOpen className="w-5 h-5" />
             Courses
           </button>
           <button
-            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'users' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'users' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
             onClick={() => setActiveTab('users')}
           >
             <Users className="w-5 h-5" />
             Users
           </button>
           <button
-            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'settings' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
+            className={`pb-4 flex items-center gap-2 font-medium ${activeTab === 'settings' ? 'text-primary border-b-2 border-primary' : 'text-muted-foreground hover:text-foreground'}`}
             onClick={() => setActiveTab('settings')}
           >
             <SettingsIcon className="w-5 h-5" />
@@ -124,25 +124,25 @@ export default function AdminDashboardPage() {
 
         {activeTab === 'courses' && (
           <Card>
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-900">All Courses</h3>
+            <div className="p-6 border-b border-border flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-foreground">All Courses</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Course</th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Instructor</th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
+                  <tr className="border-b border-border bg-muted/50">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Course</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Instructor</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {courses.map(course => (
-                    <tr key={course.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <tr key={course.id} className="border-b border-border hover:bg-muted/50">
                       <td className="px-6 py-4">
-                        <p className="font-medium text-gray-900">{course.title}</p>
+                        <p className="font-medium text-foreground">{course.title}</p>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                      <td className="px-6 py-4 text-sm text-muted-foreground">
                         {typeof course.instructor === 'object' && course.instructor !== null
                           ? (course.instructor as any).name
                           : course.instructor}
@@ -150,7 +150,7 @@ export default function AdminDashboardPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <Button variant="outline" size="sm" onClick={() => { setEditingCourse(course); setIsCourseModalOpen(true); }}>Edit</Button>
-                          <Button variant="outline" size="sm" onClick={() => handleDeleteCourse(course.id)} className="text-red-600 hover:bg-red-50">Delete</Button>
+                          <Button variant="outline" size="sm" onClick={() => handleDeleteCourse(course.id)} className="text-destructive hover:bg-destructive/10">Delete</Button>
                         </div>
                       </td>
                     </tr>
@@ -163,9 +163,9 @@ export default function AdminDashboardPage() {
 
         {activeTab === 'users' && (
           <Card>
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-lg font-semibold text-gray-900">All Users</h3>
-              <Button onClick={() => { setEditingUser(null); setIsUserModalOpen(true); }} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+            <div className="p-6 border-b border-border flex justify-between items-center">
+              <h3 className="text-lg font-semibold text-foreground">All Users</h3>
+              <Button onClick={() => { setEditingUser(null); setIsUserModalOpen(true); }} className="flex items-center gap-2 bg-primary hover:bg-primary/90">
                 <UserPlus className="w-4 h-4" />
                 Add User
               </Button>
@@ -173,23 +173,23 @@ export default function AdminDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Name</th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Email</th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Role</th>
-                    <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Actions</th>
+                  <tr className="border-b border-border bg-muted/50">
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Name</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Email</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Role</th>
+                    <th className="px-6 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map(u => (
-                    <tr key={u.id} className="border-b border-gray-200 hover:bg-gray-50">
-                      <td className="px-6 py-4 font-medium text-gray-900">{u.name}</td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{u.email}</td>
-                      <td className="px-6 py-4"><span className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium capitalize">{u.role}</span></td>
+                    <tr key={u.id} className="border-b border-border hover:bg-muted/50">
+                      <td className="px-6 py-4 font-medium text-foreground">{u.name}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground">{u.email}</td>
+                      <td className="px-6 py-4"><span className="px-3 py-1 bg-muted text-foreground/90 rounded-full text-sm font-medium capitalize">{u.role}</span></td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <Button variant="outline" size="sm" onClick={() => { setEditingUser(u); setIsUserModalOpen(true); }}>Edit</Button>
-                          <Button variant="outline" size="sm" onClick={() => handleDeleteUser(u.id)} className="text-red-600 hover:bg-red-50">Delete</Button>
+                          <Button variant="outline" size="sm" onClick={() => handleDeleteUser(u.id)} className="text-destructive hover:bg-destructive/10">Delete</Button>
                         </div>
                       </td>
                     </tr>
@@ -204,11 +204,11 @@ export default function AdminDashboardPage() {
           <Card className="p-8">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <Power className="w-6 h-6 text-orange-600" />
                   Maintenance Mode
                 </h3>
-                <p className="text-gray-600 mt-2 max-w-lg">
+                <p className="text-muted-foreground mt-2 max-w-lg">
                   When enabled, the site will be inaccessible to standard users and teachers. This is useful during major updates or resolving critical issues.
                 </p>
               </div>

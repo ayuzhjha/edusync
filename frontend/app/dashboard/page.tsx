@@ -106,7 +106,7 @@ export default function DashboardPage() {
       <PrivateRoute allowedRoles={['student']}>
         <PageWrapper>
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         </PageWrapper>
       </PrivateRoute>
@@ -127,57 +127,57 @@ export default function DashboardPage() {
       <PageWrapper>
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Welcome back, <span className="text-blue-600">{user?.name.split(' ')[0]}</span>!
+          <h2 className="text-2xl font-bold text-foreground">
+            Welcome back, <span className="text-primary">{user?.name.split(' ')[0]}</span>!
           </h2>
-          <p className="text-gray-600 mt-2">Continue your learning journey</p>
+          <p className="text-muted-foreground mt-2">Continue your learning journey</p>
         </div>
 
         {/* Stats Section - Moved from bottom with premium styling */}
         <div className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+          <div className="bg-card p-6 rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors">
-                <BookOpen className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-primary/10 rounded-xl group-hover:bg-blue-100 transition-colors">
+                <BookOpen className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Active</span>
+              <span className="text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-full">Active</span>
             </div>
-            <p className="text-sm text-gray-500 font-medium">Available Courses</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{courses.length}</p>
+            <p className="text-sm text-muted-foreground font-medium">Available Courses</p>
+            <p className="text-3xl font-bold text-foreground mt-1">{courses.length}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+          <div className="bg-card p-6 rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-50 rounded-xl group-hover:bg-green-100 transition-colors">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="p-3 bg-green-500/10 rounded-xl group-hover:bg-green-100 transition-colors">
+                <CheckCircle className="w-6 h-6 text-green-500" />
               </div>
-              <span className="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">Completed</span>
+              <span className="text-xs font-medium text-green-500 bg-green-500/10 px-2.5 py-1 rounded-full">Completed</span>
             </div>
-            <p className="text-sm text-gray-500 font-medium">Lessons Completed</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{totalCompleted}</p>
+            <p className="text-sm text-muted-foreground font-medium">Lessons Completed</p>
+            <p className="text-3xl font-bold text-foreground mt-1">{totalCompleted}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
+          <div className="bg-card p-6 rounded-2xl border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-50 rounded-xl group-hover:bg-purple-100 transition-colors">
-                <PlayCircle className="w-6 h-6 text-purple-600" />
+              <div className="p-3 bg-purple-500/10 rounded-xl group-hover:bg-purple-100 transition-colors">
+                <PlayCircle className="w-6 h-6 text-purple-500" />
               </div>
-              <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">In Progress</span>
+              <span className="text-xs font-medium text-purple-500 bg-purple-500/10 px-2.5 py-1 rounded-full">In Progress</span>
             </div>
-            <p className="text-sm text-gray-500 font-medium">Courses Started</p>
-            <p className="text-3xl font-bold text-gray-900 mt-1">{inProgressCourses.length}</p>
+            <p className="text-sm text-muted-foreground font-medium">Courses Started</p>
+            <p className="text-3xl font-bold text-foreground mt-1">{inProgressCourses.length}</p>
           </div>
         </div>
 
         {/* Continue Learning — only courses with progress */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold text-gray-900">Continue Learning</h3>
-            <span className="text-sm text-blue-600 font-medium cursor-pointer hover:underline">View all progress</span>
+            <h3 className="text-xl font-bold text-foreground">Continue Learning</h3>
+            <span className="text-sm text-primary font-medium cursor-pointer hover:underline">View all progress</span>
           </div>
           {inProgressCourses.length === 0 ? (
             <Card className="p-8 text-center">
-              <p className="text-gray-600">No courses in progress yet — start a lesson below!</p>
+              <p className="text-muted-foreground">No courses in progress yet — start a lesson below!</p>
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -194,10 +194,10 @@ export default function DashboardPage() {
 
         {/* All Courses */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">All Courses</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">All Courses</h3>
           {courses.length === 0 ? (
             <Card className="p-8 text-center">
-              <p className="text-gray-600">No courses available</p>
+              <p className="text-muted-foreground">No courses available</p>
             </Card>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">

@@ -39,8 +39,8 @@ export const ModuleAccordion: React.FC<ModuleAccordionProps> = ({
             <AccordionTrigger className="hover:no-underline">
               <div className="flex items-center justify-between w-full text-left">
                 <div>
-                  <h3 className="font-semibold text-gray-900">{module.title}</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-semibold text-foreground">{module.title}</h3>
+                  <p className="text-sm text-muted-foreground">
                     {completedInModule}/{moduleLessons.length} lessons completed
                   </p>
                 </div>

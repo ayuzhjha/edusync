@@ -23,9 +23,9 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
   if (!blobUrl) {
     return (
       <Card className="p-8 text-center">
-        <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-600 font-medium mb-2">PDF not available</p>
-        <p className="text-sm text-gray-500 mb-4">Download the course to view offline</p>
+        <FileText className="w-12 h-12 text-muted-foreground/80 mx-auto mb-4" />
+        <p className="text-muted-foreground font-medium mb-2">PDF not available</p>
+        <p className="text-sm text-muted-foreground mb-4">Download the course to view offline</p>
         <Button variant="outline">Download Course</Button>
       </Card>
     );
@@ -36,15 +36,15 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="font-semibold text-gray-900">{title}</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="font-semibold text-foreground">{title}</h3>
+          <p className="text-sm text-muted-foreground">
             Page {currentPage} of {pageCount}
           </p>
         </div>
         <a
           href={blobUrl}
           download={`${title}.pdf`}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-700"
+          className="flex items-center gap-2 text-primary hover:text-blue-700"
         >
           <Download className="w-4 h-4" />
           <span className="text-sm">Download</span>
@@ -52,7 +52,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
       </div>
 
       {/* PDF Viewer */}
-      <div className="bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+      <div className="bg-muted rounded-lg overflow-hidden border border-border">
         <iframe
           src={`${blobUrl}#page=${currentPage}`}
           className="w-full h-96"
@@ -71,7 +71,7 @@ export const PDFViewer: React.FC<PDFViewerProps> = ({
           <ChevronLeft className="w-4 h-4" />
         </Button>
 
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-muted-foreground">
           {currentPage} / {pageCount}
         </span>
 

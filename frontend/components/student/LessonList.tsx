@@ -16,11 +16,11 @@ export const LessonList: React.FC<LessonListProps> = ({ lessons, courseId, compl
   const getLessonIcon = (type: string) => {
     switch (type) {
       case 'video':
-        return <Video className="w-5 h-5 text-blue-600" />;
+        return <Video className="w-5 h-5 text-primary" />;
       case 'pdf':
-        return <FileText className="w-5 h-5 text-red-600" />;
+        return <FileText className="w-5 h-5 text-destructive" />;
       case 'quiz':
-        return <HelpCircle className="w-5 h-5 text-purple-600" />;
+        return <HelpCircle className="w-5 h-5 text-purple-500" />;
       default:
         return null;
     }
@@ -40,7 +40,7 @@ export const LessonList: React.FC<LessonListProps> = ({ lessons, courseId, compl
     <div className="space-y-2">
       {lessons.map((lesson) => (
         <Link key={lesson.id} href={`/courses/${courseId}/lessons/${lesson.id}`}>
-          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-colors cursor-pointer">
+          <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 border border-transparent hover:border-gray-200 transition-colors cursor-pointer">
             {/* Icon */}
             <div className="flex-shrink-0">
               {getLessonIcon(lesson.type)}
@@ -48,14 +48,14 @@ export const LessonList: React.FC<LessonListProps> = ({ lessons, courseId, compl
 
             {/* Content */}
             <div className="flex-1 min-w-0">
-              <h4 className="font-medium text-gray-900 truncate">{lesson.title}</h4>
-              <p className="text-sm text-gray-600">{getLessonDuration(lesson)}</p>
+              <h4 className="font-medium text-foreground truncate">{lesson.title}</h4>
+              <p className="text-sm text-muted-foreground">{getLessonDuration(lesson)}</p>
             </div>
 
             {/* Status */}
             <div className="flex-shrink-0">
               {completed[lesson.id] ? (
-                <CheckCircle className="w-5 h-5 text-green-600" />
+                <CheckCircle className="w-5 h-5 text-green-500" />
               ) : (
                 <Circle className="w-5 h-5 text-gray-300" />
               )}
@@ -63,7 +63,7 @@ export const LessonList: React.FC<LessonListProps> = ({ lessons, courseId, compl
 
             {/* Badge */}
             {lesson.isDownloaded && (
-              <div className="flex-shrink-0 px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
+              <div className="flex-shrink-0 px-2 py-1 bg-green-500/20 text-green-700 text-xs rounded">
                 Saved
               </div>
             )}

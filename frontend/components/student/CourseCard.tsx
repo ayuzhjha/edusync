@@ -25,13 +25,13 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progress = [], i
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-500/20 text-green-800';
       case 'intermediate':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/20 text-primary-foreground';
       case 'advanced':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-purple-500/20 text-purple-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-foreground/90';
     }
   };
 
@@ -54,9 +54,9 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progress = [], i
       <div className="p-4 flex flex-col flex-1">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-semibold text-gray-900 line-clamp-2 flex-1">{course.title}</h3>
+          <h3 className="font-semibold text-foreground line-clamp-2 flex-1">{course.title}</h3>
           {isDownloaded && (
-            <Badge className="bg-green-100 text-green-800 whitespace-nowrap flex-shrink-0">
+            <Badge className="bg-green-500/20 text-green-800 whitespace-nowrap flex-shrink-0">
               <Download className="w-3 h-3 mr-1" />
               Saved
             </Badge>
@@ -64,29 +64,29 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course, progress = [], i
         </div>
 
         {/* Instructor */}
-        <p className="text-sm text-gray-600 mb-2">{course.instructor}</p>
+        <p className="text-sm text-muted-foreground mb-2">{course.instructor}</p>
 
         {/* Level & Duration */}
         <div className="flex items-center gap-2 mb-3">
           <Badge className={getLevelColor(course.level)}>{course.level}</Badge>
-          <div className="flex items-center gap-1 text-xs text-gray-600">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <Clock className="w-3 h-3" />
             {Math.round((course.duration || 0) / 60)}h
           </div>
         </div>
 
         {/* Lessons Info */}
-        <p className="text-xs text-gray-600 mb-3">
+        <p className="text-xs text-muted-foreground mb-3">
           {totalLessons} lessons • {completedCount} completed
         </p>
 
         {/* Progress Bar */}
         <ProgressBar value={progressPercentage} className="mb-2" />
-        <p className="text-xs text-gray-600 text-right mb-4">{Math.round(progressPercentage)}%</p>
+        <p className="text-xs text-muted-foreground text-right mb-4">{Math.round(progressPercentage)}%</p>
 
         {/* CTA Button */}
         <Link href={`/courses/${course.id}`} className="mt-auto">
-          <Button className="w-full bg-blue-600 hover:bg-blue-700">
+          <Button className="w-full bg-primary hover:bg-primary/90">
             {completedCount > 0 ? 'Continue' : 'Start'} Course
           </Button>
         </Link>

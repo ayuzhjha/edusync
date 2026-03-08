@@ -45,10 +45,10 @@ export function StudentsModal({ course, onClose, onUpdate }: StudentsModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[80vh] flex flex-col">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-lg max-h-[80vh] flex flex-col">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-bold">Enrolled Students</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -56,16 +56,16 @@ export function StudentsModal({ course, onClose, onUpdate }: StudentsModalProps)
           {loading ? (
             <p>Loading...</p>
           ) : students.length === 0 ? (
-            <p className="text-gray-500 italic">No students enrolled yet.</p>
+            <p className="text-muted-foreground italic">No students enrolled yet.</p>
           ) : (
             <ul className="space-y-4">
               {students.map(student => (
-                <li key={student.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <li key={student.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-muted/50 rounded-lg">
                   <div>
-                    <p className="font-semibold text-gray-900">{student.name}</p>
-                    <p className="text-sm text-gray-500">{student.email}</p>
+                    <p className="font-semibold text-foreground">{student.name}</p>
+                    <p className="text-sm text-muted-foreground">{student.email}</p>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={() => removeStudent(student.id)} className="text-red-600 hover:text-red-700 hover:bg-red-50 mt-2 sm:mt-0">
+                  <Button variant="ghost" size="sm" onClick={() => removeStudent(student.id)} className="text-destructive hover:text-destructive hover:bg-destructive/10 mt-2 sm:mt-0">
                     <Trash2 className="w-4 h-4 mr-1" />
                     Remove
                   </Button>
@@ -74,7 +74,7 @@ export function StudentsModal({ course, onClose, onUpdate }: StudentsModalProps)
             </ul>
           )}
         </div>
-        <div className="p-6 border-t bg-gray-50 flex justify-end">
+        <div className="p-6 border-t bg-muted/50 flex justify-end">
           <Button variant="outline" onClick={onClose}>Close</Button>
         </div>
       </div>

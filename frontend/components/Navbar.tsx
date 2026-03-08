@@ -67,14 +67,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
             {showMenu && (
               <button
                 onClick={onMenuClick}
-                className="lg:hidden p-2 hover:bg-gray-100 rounded-md"
+                className="lg:hidden p-2 hover:bg-secondary rounded-md"
               >
                 <Menu className="w-5 h-5" />
               </button>
             )}
             <div className="flex items-center gap-2">
-              <BookOpen className="w-6 h-6 text-blue-600" />
-              <span className="font-bold text-lg text-gray-900">EduSync</span>
+              <BookOpen className="w-6 h-6 text-primary" />
+              <span className="font-bold text-lg text-foreground">EduSync</span>
             </div>
           </div>
 
@@ -93,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
 
           {/* Right side - Sync Status & User Menu */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-muted">
               {navigator.onLine ? (
                 <>
                   <div className="w-2 h-2 rounded-full bg-green-500" />
@@ -102,7 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
               ) : (
                 <>
                   <div className="w-2 h-2 rounded-full bg-red-500" />
-                  <span className="text-red-700">Offline</span>
+                  <span className="text-destructive">Offline</span>
                 </>
               )}
             </div>
@@ -127,9 +127,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <div className="px-2 py-1.5">
-                    <p className="text-sm font-semibold text-gray-900">{user.name}</p>
-                    <p className="text-xs text-gray-600">{user.email}</p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-sm font-semibold text-foreground">{user.name}</p>
+                    <p className="text-xs text-muted-foreground">{user.email}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
                       {user.role === 'admin' ? '🛡️ Admin' : user.role === 'teacher' ? '👨‍🏫 Teacher' : '👨‍🎓 Student'}
                     </p>
                   </div>
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive">
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </DropdownMenuItem>
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenu = true }) 
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors"
+              className="text-sm text-muted-foreground hover:text-foreground font-medium transition-colors"
             >
               {link.label}
             </a>

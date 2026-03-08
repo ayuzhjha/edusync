@@ -26,16 +26,16 @@ export default function HomePage() {
   }, [isAuthenticated, isLoading, user, router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-background to-indigo-100 flex items-center justify-center">
       <div className="text-center">
         <div className="flex justify-center mb-4">
-          <div className="bg-blue-600 text-white p-4 rounded-lg">
+          <div className="bg-primary text-primary-foreground p-4 rounded-lg">
             <BookOpen className="w-8 h-8" />
           </div>
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">EduSync</h1>
-        <p className="text-gray-600 mb-8">Loading your dashboard...</p>
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto" />
+        <h1 className="text-3xl font-bold text-foreground mb-2">EduSync</h1>
+        <p className="text-muted-foreground mb-8">Loading your dashboard...</p>
+        <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
       </div>
     </div>
   );

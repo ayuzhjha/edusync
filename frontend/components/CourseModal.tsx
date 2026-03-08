@@ -54,47 +54,47 @@ export function CourseModal({ course, onClose, onUpdate, instructorName }: Cours
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-bold">{course ? 'Edit Course' : 'Create Course'}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto flex-1 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Title</label>
             <input
               required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
               value={formData.title}
               onChange={e => setFormData({ ...formData, title: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Description</label>
             <textarea
               required
               rows={4}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
               value={formData.description}
               onChange={e => setFormData({ ...formData, description: e.target.value })}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Category</label>
               <input
                 required
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
                 value={formData.category}
                 onChange={e => setFormData({ ...formData, category: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Level</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Level</label>
               <select
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none bg-card"
                 value={formData.level}
                 onChange={e => setFormData({ ...formData, level: e.target.value as any })}
               >
@@ -104,29 +104,29 @@ export function CourseModal({ course, onClose, onUpdate, instructorName }: Cours
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Duration (minutes)</label>
               <input
                 type="number"
                 min="0"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
                 value={formData.duration}
                 onChange={e => setFormData({ ...formData, duration: parseInt(e.target.value) || 0 })}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Thumbnail URL</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Thumbnail URL</label>
               <input
                 type="url"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
                 value={formData.thumbnail}
                 onChange={e => setFormData({ ...formData, thumbnail: e.target.value })}
               />
             </div>
           </div>
         </form>
-        <div className="p-6 border-t bg-gray-50 flex justify-end gap-3">
+        <div className="p-6 border-t bg-muted/50 flex justify-end gap-3">
           <Button variant="outline" onClick={onClose} type="button">Cancel</Button>
-          <Button type="submit" onClick={handleSubmit} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button type="submit" onClick={handleSubmit} disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground">
             {loading ? 'Saving...' : 'Save Course'}
           </Button>
         </div>

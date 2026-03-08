@@ -46,37 +46,37 @@ export function UserModal({ user, onClose, onUpdate }: UserModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
+      <div className="bg-card rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-bold">{user ? 'Edit User' : 'Create User'}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>
         </div>
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto flex-1 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Name</label>
             <input
               required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Email</label>
             <input
               type="email"
               required
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none"
               value={formData.email}
               onChange={e => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Role</label>
             <select
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary outline-none bg-card"
               value={formData.role}
               onChange={e => setFormData({ ...formData, role: e.target.value as any })}
             >
@@ -86,9 +86,9 @@ export function UserModal({ user, onClose, onUpdate }: UserModalProps) {
             </select>
           </div>
         </form>
-        <div className="p-6 border-t bg-gray-50 flex justify-end gap-3">
+        <div className="p-6 border-t bg-muted/50 flex justify-end gap-3">
           <Button variant="outline" onClick={onClose} type="button">Cancel</Button>
-          <Button type="submit" onClick={handleSubmit} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white">
+          <Button type="submit" onClick={handleSubmit} disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground">
             {loading ? 'Saving...' : 'Save User'}
           </Button>
         </div>

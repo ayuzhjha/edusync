@@ -80,16 +80,16 @@ export default function LoginPage() {
         {/* Login Form */}
         <div className="bg-card hud-border rounded-lg p-6">
           {error && (
-            <Alert className="mb-4 border-red-200 bg-red-50">
-              <AlertCircle className="h-4 w-4 text-red-600" />
-              <AlertDescription className="text-red-600">{error}</AlertDescription>
+            <Alert className="mb-4 border-destructive/50 bg-destructive/10">
+              <AlertCircle className="h-4 w-4 text-destructive" />
+              <AlertDescription className="text-destructive">{error}</AlertDescription>
             </Alert>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
             <div>
-              <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <Label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-1">
                 Email Address
               </Label>
               <Input
@@ -135,7 +135,7 @@ export default function LoginPage() {
                 checked={rememberMe}
                 onCheckedChange={() => setRememberMe(!rememberMe)}
               />
-              <Label htmlFor="remember" className="ml-2 text-sm text-gray-600 cursor-pointer">
+              <Label htmlFor="remember" className="ml-2 text-sm text-muted-foreground cursor-pointer">
                 Remember me
               </Label>
             </div>

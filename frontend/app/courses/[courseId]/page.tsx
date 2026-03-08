@@ -108,7 +108,7 @@ export default function CourseDetailPage() {
       <PrivateRoute allowedRoles={['student']}>
         <PageWrapper>
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         </PageWrapper>
       </PrivateRoute>
@@ -120,7 +120,7 @@ export default function CourseDetailPage() {
       <PrivateRoute allowedRoles={['student']}>
         <PageWrapper>
           <Card className="p-8 text-center">
-            <p className="text-gray-600">Course not found</p>
+            <p className="text-muted-foreground">Course not found</p>
           </Card>
         </PageWrapper>
       </PrivateRoute>
@@ -131,7 +131,7 @@ export default function CourseDetailPage() {
     <PrivateRoute allowedRoles={['student']}>
       <PageWrapper showNav>
         {/* Course Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg p-8 mb-8">
+        <div className="bg-gradient-to-r from-primary/80 to-primary text-primary-foreground rounded-lg p-8 mb-8">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-2">{course.title}</h1>
@@ -187,7 +187,7 @@ export default function CourseDetailPage() {
                 <span>Downloading course content for offline access...</span>
                 <span>{overallPercent}%</span>
               </div>
-              <UIProgress value={overallPercent} className="h-1.5 bg-blue-400" />
+              <UIProgress value={overallPercent} className="h-1.5 bg-primary/60" />
             </div>
           )}
         </div>
@@ -195,27 +195,27 @@ export default function CourseDetailPage() {
         {/* Progress Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card className="p-6">
-            <p className="text-sm text-gray-600 font-semibold">Progress</p>
-            <p className="text-3xl font-bold text-blue-600 mt-2">
+            <p className="text-sm text-muted-foreground font-semibold">Progress</p>
+            <p className="text-3xl font-bold text-primary mt-2">
               {completedCount}/{lessons.length}
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {lessons.length > 0 ? Math.round((completedCount / lessons.length) * 100) : 0}% complete
             </p>
           </Card>
           <Card className="p-6">
-            <p className="text-sm text-gray-600 font-semibold">Modules</p>
-            <p className="text-3xl font-bold text-green-600 mt-2">{modules.length}</p>
+            <p className="text-sm text-muted-foreground font-semibold">Modules</p>
+            <p className="text-3xl font-bold text-green-500 mt-2">{modules.length}</p>
           </Card>
           <Card className="p-6">
-            <p className="text-sm text-gray-600 font-semibold">Lessons</p>
-            <p className="text-3xl font-bold text-purple-600 mt-2">{lessons.length}</p>
+            <p className="text-sm text-muted-foreground font-semibold">Lessons</p>
+            <p className="text-3xl font-bold text-purple-500 mt-2">{lessons.length}</p>
           </Card>
         </div>
 
         {/* Course Content */}
         <Card className="p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6">Course Content</h2>
+          <h2 className="text-xl font-bold text-foreground mb-6">Course Content</h2>
           <ModuleAccordion
             modules={modules}
             lessons={lessons}

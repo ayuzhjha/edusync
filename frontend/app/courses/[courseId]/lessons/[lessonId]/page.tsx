@@ -202,7 +202,7 @@ export default function LessonDetailPage() {
       <PrivateRoute allowedRoles={['student']}>
         <PageWrapper>
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         </PageWrapper>
       </PrivateRoute>
@@ -214,7 +214,7 @@ export default function LessonDetailPage() {
       <PrivateRoute allowedRoles={['student']}>
         <PageWrapper>
           <Card className="p-8 text-center">
-            <p className="text-gray-600">Lesson not found</p>
+            <p className="text-muted-foreground">Lesson not found</p>
           </Card>
         </PageWrapper>
       </PrivateRoute>
@@ -228,7 +228,7 @@ export default function LessonDetailPage() {
         <div className="mb-6">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium mb-4"
+            className="flex items-center gap-2 text-primary hover:text-blue-700 font-medium mb-4"
           >
             <ChevronLeft className="w-4 h-4" />
             Back to Course
@@ -236,13 +236,13 @@ export default function LessonDetailPage() {
 
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900">{lesson.title}</h1>
+              <h1 className="text-3xl font-bold text-foreground">{lesson.title}</h1>
               {lesson.description && (
-                <p className="text-gray-600 mt-2">{lesson.description}</p>
+                <p className="text-muted-foreground mt-2">{lesson.description}</p>
               )}
             </div>
             {progress?.completed && (
-              <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 bg-green-500/10 text-green-700 px-4 py-2 rounded-lg">
                 <CheckCircle className="w-5 h-5" />
                 <span className="font-medium">Completed</span>
               </div>
@@ -281,7 +281,7 @@ export default function LessonDetailPage() {
                     <AlertCircle className="w-16 h-16 text-amber-600" />
                   </div>
                   <h3 className="text-2xl font-bold text-amber-900">Offline Mode</h3>
-                  <p className="text-gray-600 mt-4">
+                  <p className="text-muted-foreground mt-4">
                     Quizzes can only be accessed while you are online to ensure your progress is synced correctly.
                   </p>
                   <Button className="mt-6" onClick={() => router.back()}>
@@ -290,18 +290,18 @@ export default function LessonDetailPage() {
                 </Card>
               ) : quiz && (
                 quizResult ? (
-                  <Card className="p-8 text-center bg-blue-50 border-blue-200">
+                  <Card className="p-8 text-center bg-primary/10 border-primary/50">
                     <div className="flex justify-center mb-4">
-                      <Award className="w-16 h-16 text-blue-600" />
+                      <Award className="w-16 h-16 text-primary" />
                     </div>
-                    <h3 className="text-2xl font-bold text-blue-900">Quiz Completed</h3>
+                    <h3 className="text-2xl font-bold text-primary-foreground">Quiz Completed</h3>
                     <p className="text-4xl font-bold mt-2 text-blue-700">
                       {quizResult.score}%
                     </p>
-                    <p className="text-gray-600 mt-4">
+                    <p className="text-muted-foreground mt-4">
                       You have already appeared for this quiz.
                     </p>
-                    <p className="text-sm text-gray-500 mt-2">
+                    <p className="text-sm text-muted-foreground mt-2">
                       Date: {new Date(quizResult.submittedAt).toLocaleDateString()}
                     </p>
                     <Button className="mt-6" onClick={() => router.back()}>
@@ -338,27 +338,27 @@ export default function LessonDetailPage() {
           <div className="space-y-6">
             {/* Lesson Details */}
             <Card className="p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Lesson Details</h3>
+              <h3 className="font-semibold text-foreground mb-4">Lesson Details</h3>
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-gray-600">Type</p>
-                  <p className="font-medium text-gray-900 capitalize">{lesson.type}</p>
+                  <p className="text-muted-foreground">Type</p>
+                  <p className="font-medium text-foreground capitalize">{lesson.type}</p>
                 </div>
                 {lesson.type === 'video' && lesson.duration && (
                   <div>
-                    <p className="text-gray-600">Duration</p>
-                    <p className="font-medium text-gray-900">{lesson.duration} minutes</p>
+                    <p className="text-muted-foreground">Duration</p>
+                    <p className="font-medium text-foreground">{lesson.duration} minutes</p>
                   </div>
                 )}
                 {lesson.type === 'pdf' && lesson.pageCount && (
                   <div>
-                    <p className="text-gray-600">Pages</p>
-                    <p className="font-medium text-gray-900">{lesson.pageCount}</p>
+                    <p className="text-muted-foreground">Pages</p>
+                    <p className="font-medium text-foreground">{lesson.pageCount}</p>
                   </div>
                 )}
                 <div>
-                  <p className="text-gray-600">Status</p>
-                  <p className="font-medium text-gray-900">
+                  <p className="text-muted-foreground">Status</p>
+                  <p className="font-medium text-foreground">
                     {progress?.completed ? '✓ Completed' : 'Not Started'}
                   </p>
                 </div>
@@ -367,7 +367,7 @@ export default function LessonDetailPage() {
 
             {/* Downloaded Status */}
             {lesson.isDownloaded && (
-              <Card className="p-6 bg-green-50 border-green-200">
+              <Card className="p-6 bg-green-500/10 border-green-500/50">
                 <p className="text-sm text-green-700 font-medium">
                   This lesson is downloaded and available offline
                 </p>
