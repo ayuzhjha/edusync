@@ -92,7 +92,7 @@ Follow these step-by-step instructions to get the EduSync suite running on your 
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/edusync.git
+    git clone https://github.com/ayuzhjha/edusync.git
     cd edusync
     ```
 
